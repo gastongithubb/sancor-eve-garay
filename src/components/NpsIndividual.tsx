@@ -24,7 +24,13 @@ const initialMetrics: Metrics = {
 };
 
 const NpsIndividual: React.FC = () => {
-  const [metrics, setMetrics] = useState<Metrics>(initialMetrics);
+  const [metrics, setMetrics] = useState<Metrics>({
+    responses: Array(20).fill(0),
+    nps: Array(20).fill(0),
+    csat: Array(20).fill(0),
+    rd: Array(20).fill(0),
+    names: initialMetrics.names
+  });
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
