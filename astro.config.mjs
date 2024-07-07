@@ -3,16 +3,21 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 
-
-
-// https://astro.build/config
 export default defineConfig({
-  output: 'static',
+  output: 'hybrid',
   build: {
     outDir: 'dist',
   },
   server: {
+    port: process.env.PORT || 3000, // Configura el puerto del servidor, opcionalmente desde una variable de entorno
   },
-  adapter: vercel(),
-    integrations: [react(), tailwind()],
-  });
+  integrations: [
+    react(),     // Integra React con Astro
+    tailwind(),  // Integra Tailwind CSS con Astro
+    vercel(),    // Configura Astro para despliegues en Vercel
+  ],
+  routes: [
+    { src: "/", dest: "/index.astro" }, // Ruta para la raíz de la aplicación
+    // Agrega más rutas según sea necesario para tu aplicación
+  ],
+});

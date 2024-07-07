@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Client } from 'pg';
+import { connectDB, disconnectDB } from '../db';
 
 interface Metric {
   id: number;
@@ -14,37 +16,62 @@ const NpsIndividual: React.FC = () => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    async function fetchData() {
+      try {
+        await connectDB();
+        const client = new Client({
+          connectionString: process.env.POSTGRES_URL!,
+          ssl: {
+            rejectUnauthorized: false, // Opcional, dependiendo de tu configuración SSL
+          },
+        });
+        await client.connect();
+        const result = await client.query<Metric>('SELECT * FROM metrics');
+        setMetrics(result.rows);
+      } catch (error) {
+        console.error('Error fetching metrics:', error);
+      } finally {
+        await disconnectDB();
+      }
+    }
+
     if (typeof window !== 'undefined') {
       setIsClient(true);
+      fetchData();
     }
   }, []);
 
-  useEffect(() => {
-    if (isClient) {
-      fetch('http://localhost:5000/metrics')
-        .then((response) => response.json())
-        .then((data) => setMetrics(data))
-        .catch((error) => console.error('Error fetching metrics:', error));
-    }
-  }, [isClient]);
-
-  const handleMetricChange = (id: number, field: keyof Metric, value: string) => {
+  const handleMetricChange = async (id: number, field: keyof Metric, value: string) => {
     const numValue = parseFloat(value);
-    setMetrics((prevMetrics) =>
-      prevMetrics.map((metric) =>
-        metric.id === id ? { ...metric, [field]: numValue } : metric
-      )
-    );
 
-    fetch(`http://localhost:5000/metrics/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ [field]: numValue }),
-    }).catch((error) => console.error('Error updating metric:', error));
+    try {
+      await connectDB();
+      const client = new Client({
+        connectionString: process.env.POSTGRES_URL!,
+        ssl: {
+          rejectUnauthorized: false, // Opcional, dependiendo de tu configuración SSL
+        },
+      });
+      await client.connect();
+      await client.query(
+        `UPDATE metrics SET ${field} = $1 WHERE id = $2`,
+        [numValue, id]
+      );
+
+      // Actualizar el estado local solo después de que se haya actualizado en la base de datos
+      setMetrics((prevMetrics) =>
+        prevMetrics.map((metric) =>
+          metric.id === id ? { ...metric, [field]: numValue } : metric
+        )
+      );
+    } catch (error) {
+      console.error('Error updating metric:', error);
+    } finally {
+      await disconnectDB();
+    }
   };
 
+  // Funciones para obtener colores de acuerdo a las métricas
   const getNpsColor = (nps: number) => {
     if (nps < 0) return '#FFC6CE'; // Rojo
     if (nps >= 0 && nps < 15) return '#FFEA9C'; // Amarillo
