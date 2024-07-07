@@ -1,114 +1,168 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 
-interface PersonMetrics {
-  name: string;
-  nps: number;
-  csat: number;
-  rd: number;
+interface Metrics {
+  responses: number[];
+  nps: number[];
+  csat: number[];
+  rd: number[];
+  names: string[];
 }
 
-const names = [
-  'Persona 1', 'Persona 2', 'Persona 3', 'Persona 4', 'Persona 5',
-  'Persona 6', 'Persona 7', 'Persona 8', 'Persona 9', 'Persona 10',
-  'Persona 11', 'Persona 12', 'Persona 13', 'Persona 14', 'Persona 15',
-  'Persona 16', 'Persona 17', 'Persona 18', 'Persona 19', 'Persona 20'
-];
+const initialMetrics: Metrics = {
+  responses: Array(20).fill(0),
+  nps: Array(20).fill(0),
+  csat: Array(20).fill(0),
+  rd: Array(20).fill(0),
+  names: [
+    'Abigail Veyga', 'Agustin Suarez', 'Aucg Heil', 'Carrizo Tula', 'Danna Cruz', 
+    'Franco Alvarez', 'Gaston Alvarez', 'Javier Rodriguez', 'Jeremías Flores', 
+    'Karen Aranda', 'Karen Chavez', 'Lautaro Brocal', 'Macarena Gomez', 
+    'Marcos Montenegro', 'Milagros Juncos', 'Nicolas Macagno', 'Victoria Martinez', 
+    'Ismael Irirarte', 'Zaida Abreu'
+  ]
+};
 
 const NpsIndividual: React.FC = () => {
-  const [peopleMetrics, setPeopleMetrics] = useState<PersonMetrics[]>(() => {
-    const storedMetrics = localStorage.getItem('peopleMetrics');
-    if (storedMetrics) {
-      return JSON.parse(storedMetrics);
-    } else {
-      return names.map(name => ({
-        name,
-        nps: 0,
-        csat: 0,
-        rd: 0
-      }));
-    }
-  });
+  const [metrics, setMetrics] = useState<Metrics>(initialMetrics);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('peopleMetrics', JSON.stringify(peopleMetrics));
-  }, [peopleMetrics]);
+    console.log('useEffect - checking if in browser');
+    if (typeof window !== 'undefined') {
+      console.log('useEffect - in browser');
+      const storedMetrics = localStorage.getItem('metrics');
+      if (storedMetrics) {
+        console.log('useEffect - found stored metrics', JSON.parse(storedMetrics));
+        setMetrics(JSON.parse(storedMetrics));
+      } else {
+        setMetrics(initialMetrics); // Fallback to initial metrics if nothing is stored
+      }
+      setIsClient(true);
+    }
+  }, []);
 
-  const getNpsColor = (nps: number) => {
-    if (nps < 0) return '#FF0000'; // Red
-    if (nps >= 0 && nps <= 20) return '#FFFF00'; // Yellow
-    if (nps > 20 && nps <= 100) return '#00FF00'; // Green
-    return '#000000'; // Default color
-  };
+  useEffect(() => {
+    if (isClient && metrics) {
+      console.log('useEffect - saving metrics to localStorage', metrics);
+      localStorage.setItem('metrics', JSON.stringify(metrics));
+    }
+  }, [metrics, isClient]);
 
-  const getCsatColor = (csat: number) => {
-    if (csat < 60) return '#FFFF00'; // Yellow
-    return '#000000'; // Default color
-  };
-
-  const handleMetricChange = (index: number, metric: keyof PersonMetrics, value: string) => {
-    setPeopleMetrics(prevMetrics => {
-      const newMetrics = [...prevMetrics];
-      newMetrics[index] = {
-        ...newMetrics[index],
-        [metric]: parseFloat(value)
-      };
+  const handleMetricChange = (metric: keyof Metrics, value: string, index: number) => {
+    setMetrics(prevMetrics => {
+      if (!prevMetrics) return prevMetrics;
+      const newMetrics = { ...prevMetrics };
+      const numValue = parseFloat(value);
+      (newMetrics[metric] as number[])[index] = numValue;
+      console.log('handleMetricChange - updated metrics', newMetrics);
       return newMetrics;
     });
   };
 
+  const getNpsColor = (nps: number) => {
+    if (nps < 0) return '#FFC6CE'; // Rojo
+    if (nps >= 0 && nps < 15) return '#FFEA9C'; // Amarillo
+    return '#C6F0CE'; // Verde
+  };
+
+  const getCsatRdColor = (value: number) => {
+    if (value < 65) return '#FFC6CE'; // Rojo
+    if (value >= 65 && value <= 69) return '#FFEA9C'; // Amarillo
+    return '#C6F0CE'; // Verde
+  };
+
+  if (!isClient) {
+    return <div>Cargando...</div>; // Renderiza un mensaje de carga mientras se determina si está en el navegador
+  }
+
+  const chartData = metrics.names.map((name, index) => ({
+    name,
+    responses: metrics.responses[index],
+    nps: metrics.nps[index],
+    csat: metrics.csat[index],
+    rd: metrics.rd[index]
+  }));
+
   return (
-    <div className="p-6 text-black bg-gray-900 rounded-lg shadow-lg">
-      <h1 className="mb-4 text-3xl font-bold">Métricas Individuales por Persona</h1>
-      <ResponsiveContainer width="100%" height={600}>
-        <BarChart data={peopleMetrics} layout="vertical">
-          <XAxis type="number" />
-          <YAxis type="category" dataKey="name" />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="nps">
-            {peopleMetrics.map((entry, index) => (
-              <Bar key={index} dataKey="nps" fill={getNpsColor(entry.nps)} />
-            ))}
-          </Bar>
-          <Bar dataKey="csat">
-            {peopleMetrics.map((entry, index) => (
-              <Bar key={index} dataKey="csat" fill={getCsatColor(entry.csat)} />
-            ))}
-          </Bar>
-          <Bar dataKey="rd" />
-        </BarChart>
-      </ResponsiveContainer>
-      <div className="mt-4">
-        {peopleMetrics.map((person, index) => (
-          <div key={index} className="mb-4">
-            <h3 className="mb-2 text-xl font-bold">{person.name}</h3>
-            <div className="flex items-center">
-              <label className="mr-2">NPS:</label>
-              <input
-                type="number"
-                value={person.nps}
-                onChange={(e) => handleMetricChange(index, 'nps', e.target.value)}
-                className="w-16 bg-transparent border-b border-teal-400 focus:outline-none"
-              />
-              <label className="ml-4 mr-2">CSAT:</label>
-              <input
-                type="number"
-                value={person.csat}
-                onChange={(e) => handleMetricChange(index, 'csat', e.target.value)}
-                className="w-16 bg-transparent border-b border-teal-400 focus:outline-none"
-              />
-              <label className="ml-4 mr-2">RD:</label>
-              <input
-                type="number"
-                value={person.rd}
-                onChange={(e) => handleMetricChange(index, 'rd', e.target.value)}
-                className="w-16 bg-transparent border-b border-teal-400 focus:outline-none"
-              />
-            </div>
-          </div>
-        ))}
+    <div className="p-6 text-black bg-gray-100 rounded-lg shadow-lg">
+      <h1 className="mb-6 text-3xl font-bold">Métricas Individuales</h1>
+      <div className="mb-6" style={{ height: '400px' }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={chartData}>
+            <XAxis dataKey="name" stroke="#000000" />
+            <YAxis stroke="#000000" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="nps">
+              {chartData.map((entry, index) => (
+                <Cell key={`nps-${index}`} fill={getNpsColor(entry.nps)} />
+              ))}
+            </Bar>
+            <Bar dataKey="csat">
+              {chartData.map((entry, index) => (
+                <Cell key={`csat-${index}`} fill={getCsatRdColor(entry.csat)} />
+              ))}
+            </Bar>
+            <Bar dataKey="rd">
+              {chartData.map((entry, index) => (
+                <Cell key={`rd-${index}`} fill={getCsatRdColor(entry.rd)} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
+
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="border-b-2 border-gray-300">
+            <th className="py-2">Nombre</th>
+            <th className="py-2">Q de respuestas</th>
+            <th className="py-2">NPS</th>
+            <th className="py-2">CSAT</th>
+            <th className="py-2">RD</th>
+          </tr>
+        </thead>
+        <tbody>
+          {metrics.names.map((name, index) => (
+            <tr key={index} className="border-b border-gray-200">
+              <td className="py-2">{name}</td>
+              <td className="py-2">
+                <input
+                  type="number"
+                  value={metrics.responses[index]}
+                  onChange={(e) => handleMetricChange('responses', e.target.value, index)}
+                  className="w-full p-1 text-black bg-gray-200 rounded"
+                />
+              </td>
+              <td className="py-2">
+                <input
+                  type="number"
+                  value={metrics.nps[index]}
+                  onChange={(e) => handleMetricChange('nps', e.target.value, index)}
+                  className="w-full p-1 text-black bg-gray-200 rounded"
+                />
+              </td>
+              <td className="py-2">
+                <input
+                  type="number"
+                  value={metrics.csat[index]}
+                  onChange={(e) => handleMetricChange('csat', e.target.value, index)}
+                  className="w-full p-1 text-black bg-gray-200 rounded"
+                />
+              </td>
+              <td className="py-2">
+                <input
+                  type="number"
+                  value={metrics.rd[index]}
+                  onChange={(e) => handleMetricChange('rd', e.target.value, index)}
+                  className="w-full p-1 text-black bg-gray-200 rounded"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
