@@ -15,7 +15,7 @@ const initialMetrics: Metrics = {
   csat: Array(20).fill(0),
   rd: Array(20).fill(0),
   names: [
-    'Abigail Veyga', 'Agustin Suarez', 'Aucg Heil', 'Carrizo Tula', 'Danna Cruz', 
+    'Abigail Veyga', 'Agustin Suarez', 'Auca Heil', 'Carrizo Tula', 'Danna Cruz', 
     'Franco Alvarez', 'Gaston Alvarez', 'Javier Rodriguez', 'Jeremías Flores', 
     'Karen Aranda', 'Karen Chavez', 'Lautaro Brocal', 'Macarena Gomez', 
     'Marcos Montenegro', 'Milagros Juncos', 'Nicolas Macagno', 'Victoria Martinez', 

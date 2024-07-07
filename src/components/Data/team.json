@@ -1,34 +1,171 @@
 {
-    "team":
-    [
+"team": [
+    {
+        "title": "Supervisora",
+        "name": "Evelyn Garay",
+        "description": "KONECTA - Sancor Salud",
+        "profile": "./../../public/faces/eve.jpg",
+        "link": "/",
+        "cumpleaños": "1980-05-15"
+    },
         {
-            "title": "CEO and Founder",
-            "name": "John Smith",
-            "description": "10+ years of experience in digital marketing. Expertise in SEO, PPC, and content strategy",
-            "profile": "/team/c1.png",
-            "link": "/"
+            "title": "CX Agent",
+            "name": "Abigail Veyga",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/abi.jpg",
+            "link": "/",
+            "cumpleaños": "31 de Agosto"
         },
         {
-            "title": "Director of Operations",
-            "name": "Jane Doe",
-            "description": "7+ years of experience in project management and team leadership. Strong organizational and communication skills",
-            "profile": "/team/c2.png",
-            "link": "/"
+            "title": "CX Agent",
+            "name": "Agustin Suarez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/agustin.jpg",
+            "link": "/",
+            "cumpleaños": "08 de Marzo"
         },
         {
-            "title": "Senior SEO Specialist",
-            "name": "Michael Brown",
-            "description": "5+ years of experience in SEO and content creation. Proficient in keyword research and on-page optimization",
-            "profile": "/team/c3.png",
-            "link": "/"
+            "title": "CX Agent",
+            "name": "Auca Heil",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/auca.jpg",
+            "link": "/",
+            "cumpleaños": "27 de Febrero"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Maria Tula",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/tula.jpg",
+            "link": "/",
+            "cumpleaños": "26 de Enero"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Danna Cruz",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/none.webp",
+            "link": "/",
+            "cumpleaños": "02 de Junio"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Franco Alvarez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/franco.jpg",
+            "link": "/",
+            "cumpleaños": "05 de Julio"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Gaston Alvarez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/gaston.jpeg",
+            "link": "/",
+            "cumpleaños": "29 de Diciembre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Javier Rodriguez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/none.webp",
+            "link": "/",
+            "cumpleaños": "18 de Noviembre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Jeremías Flores",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/jeremias.jpg",
+            "link": "/",
+            "cumpleaños": "10 de Abril"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Karen Aranda",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/none.webp",
+            "link": "/",
+            "cumpleaños": "07 de Julio"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Karen Chavez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/karenj.jpg",
+            "link": "/",
+            "cumpleaños": "25 de Octubre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Lautaro Brocal",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/lauta.jpg",
+            "link": "/",
+            "cumpleaños": "03 de Septiembre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Macarena Gomez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/maca.jpg",
+            "link": "/",
+            "cumpleaños": "15 de Enero"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Marcos Montenegro",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/marcos.jpg",
+            "link": "/",
+            "cumpleaños": "31 de Diciembre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Milagros Juncos",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/mili.jpg",
+            "link": "/",
+            "cumpleaños": "23 de Enero"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Nicolas Macagno",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/lean.jpg",
+            "link": "/",
+            "cumpleaños": "05 de Marzo"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Victoria Martinez",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/vicky.jpg",
+            "link": "/",
+            "cumpleaños": "14 de Mayo"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Ismael Irirarte",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "./../../public/faces/ismael.jpg",
+            "link": "/",
+            "cumpleaños": "15 de Septiembre"
+        },
+        {
+            "title": "CX Agent",
+            "name": "Zaida Abregu",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "../../../public/faces/zaida.jpg",
+            "link": "/",
+            "cumpleaños": "26 de Abril"
         }
-
     ],
     "process":
     [
         {
-            "label": "Consultation",
-            "content": "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+            "label": "Desarrolla Empatía y Escucha Activa",
+            "content": "Prioriza entender las preocupaciones y necesidades de cada paciente. Escucha activamente y muestra empatía en cada interacción para construir relaciones sólidas."
         },
         {
             "label": "Research",
