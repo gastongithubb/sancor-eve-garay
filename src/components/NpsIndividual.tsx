@@ -145,7 +145,21 @@ const NpsIndividual: React.FC = () => {
                 />
               </label>
             </div>
-            <button onClick={() => handleUpdateUser(user)} style={{ width: '100%' }}>
+            <button 
+              onClick={() => handleUpdateUser(user)} 
+              style={{ 
+                width: '100%', 
+                padding: '10px', 
+                backgroundColor: '#007bff', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px', 
+                cursor: 'pointer', 
+                transition: 'background-color 0.3s' 
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#007bff')}
+            >
               Guardar Cambios
             </button>
           </div>
