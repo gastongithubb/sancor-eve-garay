@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, type UserRow, updateUser } from '../db/schema'; // Asegúrate de que la ruta de importación sea correcta
+import { getUsers, type UserRow, updateUser } from '../db/schema';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const NpsIndividual: React.FC = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -27,8 +28,7 @@ const NpsIndividual: React.FC = () => {
   const handleUpdateUser = async (user: UserRow) => {
     try {
       await updateUser(user);
-      // Actualizar la lista de usuarios después de la actualización
-      fetchUsers();
+      fetchUsers(); // Recargar los datos después de la actualización
     } catch (err) {
       setError('Error al actualizar el usuario');
       console.error('Error al actualizar el usuario:', err);
@@ -41,34 +41,26 @@ const NpsIndividual: React.FC = () => {
   return (
     <div>
       <h1>Métricas de Usuarios</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Respuestas</th>
-            <th>NPS</th>
-            <th>CSAT</th>
-            <th>RD</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.responses}</td>
-              <td>{user.nps}</td>
-              <td>{user.csat}</td>
-              <td>{user.rd}</td>
-              <td>
-                <button onClick={() => handleUpdateUser({ ...user, responses: user.responses + 1 })}>
-                  Incrementar Respuestas
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {users.map((user) => (
+        <div key={user.id} style={{ marginBottom: '30px' }}>
+          <h2>{user.name}</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={[user]}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="responses" fill="#8884d8" name="Respuestas" />
+              <Bar dataKey="nps" fill="#82ca9d" name="NPS" />
+              <Bar dataKey="csat" fill="#ffc658" name="CSAT" />
+              <Bar dataKey="rd" fill="#ff7300" name="RD" />
+            </BarChart>
+          </ResponsiveContainer>
+          <button onClick={() => handleUpdateUser({ ...user, responses: user.responses + 1 })}>
+            Incrementar Respuestas
+          </button>
+        </div>
+      ))}
     </div>
   );
 };
