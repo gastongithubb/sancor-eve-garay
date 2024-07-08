@@ -38,6 +38,7 @@ const initialUserData: UserRow[] = [
   { id: 19, name: 'Zaida Abreu', responses: 12, nps: 25, csat: 83, rd: 83 },
 ];
 
+
 export async function initializeDatabase(): Promise<void> {
   try {
     const tableExists = await db.select().from(users).execute();
