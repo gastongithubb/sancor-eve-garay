@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, type UserRow, updateUser } from '../db/schema';
+import { getUsers, type UserRow, updateUser, initializeDatabase } from '../db/schema';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const NpsIndividual: React.FC = () => {
@@ -8,35 +8,36 @@ const NpsIndividual: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    const initAndFetchUsers = async () => {
+      try {
+        setLoading(true);
+        await initializeDatabase();
+        const fetchedUsers = await getUsers();
+        setUsers(fetchedUsers);
+        setError(null);
+      } catch (err) {
+        console.error('Error al inicializar la base de datos o cargar usuarios:', err);
+        setError(`Error: ${err instanceof Error ? err.message : String(err)}`);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const fetchedUsers = await getUsers();
-      console.log('Fetched users:', fetchedUsers); // Depuración
-      setUsers(fetchedUsers);
-      setError(null);
-    } catch (err) {
-      console.error('Error al cargar los usuarios:', err);
-      setError(`Error al cargar los usuarios: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setLoading(false);
-    }
-  };
+    initAndFetchUsers();
+  }, []);
 
   const handleUpdateUser = async (user: UserRow) => {
     try {
       await updateUser(user);
-      fetchUsers(); // Recargar los datos después de la actualización
+      const updatedUsers = await getUsers();
+      setUsers(updatedUsers);
     } catch (err) {
       console.error('Error al actualizar el usuario:', err);
       setError(`Error al actualizar el usuario: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 
-  if (loading) return <div>Cargando datos de usuarios...</div>;
+  if (loading) return <div>Inicializando y cargando datos de usuarios...</div>;
   if (error) return <div>Error: {error}</div>;
   if (users.length === 0) return <div>No se encontraron datos de usuarios. Por favor, verifica la conexión con la base de datos.</div>;
 
