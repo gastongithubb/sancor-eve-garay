@@ -14,7 +14,9 @@ export default defineConfig({
   },
   integrations: [react(), tailwind(), vercel(),],
   vite: {
-    'import.meta.env.PUBLIC_TURSO_CONNECTION_URL': JSON.stringify(process.env.PUBLIC_TURSO_CONNECTION_URL),
-      'import.meta.env.PUBLIC_TURSO_AUTH_TOKEN': JSON.stringify(process.env.PUBLIC_TURSO_AUTH_TOKEN),
+    'import.meta.env.TURSO_CONNECTION_URL': 
+        JSON.stringify(process.env.TURSO_CONNECTION_URL),
+      'import.meta.env.TURSO_AUTH_TOKEN': 
+        JSON.stringify(process.env.TURSO_AUTH_TOKEN),
   }
 });

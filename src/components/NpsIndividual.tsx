@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, type UserRow, updateUser, initializeDatabase } from '../db/schema';
+import { getUsers, type UserRow, updateUser, initializeDatabase } from '../components/lib/db/schema';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const NpsIndividual: React.FC = () => {
@@ -9,23 +9,21 @@ const NpsIndividual: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const initAndFetchUsers = async () => {
+    const fetchUsers = async () => {
       try {
         setLoading(true);
-        await initializeDatabase();
         const fetchedUsers = await getUsers();
-        console.log('Usuarios obtenidos:', fetchedUsers); // Log para depuración
         setUsers(fetchedUsers);
         setError(null);
       } catch (err) {
-        console.error('Error detallado:', err);
+        console.error('Error al cargar usuarios:', err);
         setError(`Error al cargar las métricas: ${err instanceof Error ? err.message : String(err)}`);
       } finally {
         setLoading(false);
       }
     };
 
-    initAndFetchUsers();
+    fetchUsers();
   }, []);
 
   const handleUpdateUser = async (user: UserRow) => {
@@ -45,7 +43,7 @@ const NpsIndividual: React.FC = () => {
 
   if (loading) return <div>Cargando datos de usuarios...</div>;
   if (error) return <div>Error: {error}</div>;
-  if (users.length === 0) return <div>No se encontraron datos de usuarios. La base de datos podría estar vacía.</div>;
+  if (users.length === 0) return <div>No se encontraron datos de usuarios.</div>;
 
   return (
     <div>
