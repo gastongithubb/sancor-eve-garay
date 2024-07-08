@@ -1,10 +1,10 @@
 import { createClient } from '@libsql/client';
 
-const TURSO_CONNECTION_URL = import.meta.env.TURSO_CONNECTION_URL as string;
-const TURSO_AUTH_TOKEN = import.meta.env.TURSO_AUTH_TOKEN as string;
+const TURSO_CONNECTION_URL = import.meta.env.PUBLIC_TURSO_CONNECTION_URL;
+const TURSO_AUTH_TOKEN = import.meta.env.PUBLIC_TURSO_AUTH_TOKEN;
 
 if (!TURSO_CONNECTION_URL || !TURSO_AUTH_TOKEN) {
-  console.error('Las variables de entorno TURSO_CONNECTION_URL y TURSO_AUTH_TOKEN deben estar definidas');
+  console.error('Las variables de entorno PUBLIC_TURSO_CONNECTION_URL y PUBLIC_TURSO_AUTH_TOKEN deben estar definidas');
   throw new Error('Configuración de base de datos incompleta');
 }
 
