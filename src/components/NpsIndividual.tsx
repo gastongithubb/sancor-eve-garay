@@ -64,7 +64,7 @@ const NpsIndividual: React.FC = () => {
 
   return (
     <div>
-      <h1>Métricas de Usuarios</h1>
+      <h1>Métricas - NPS Individual</h1>
       <input
         type="text"
         placeholder="Buscar por nombre..."
