@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { db } from './index';
 
+// Definición de la tabla de usuarios
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey(),
   name: text('name').notNull(),
@@ -11,25 +12,47 @@ export const users = sqliteTable('users', {
   rd: integer('rd').notNull().default(0),
 });
 
+// Tipo inferido para filas de usuario
 export type UserRow = typeof users.$inferSelect;
 
-const initialUserData = [
+// Datos iniciales de usuarios
+const initialUserData: UserRow[] = [
   { id: 1, name: 'Abigail Veyga', responses: 7, nps: 0, csat: 71, rd: 57 },
   { id: 2, name: 'Agustin Suarez', responses: 3, nps: -67, csat: 100, rd: 100 },
-  // ... (el resto de los datos iniciales)
+  { id: 3, name: 'Auca Heil', responses: 9, nps: 67, csat: 89, rd: 67 },
+  { id: 4, name: 'Carrizo Tula', responses: 10, nps: 30, csat: 80, rd: 80 },
+  { id: 5, name: 'Danna Cruz', responses: 3, nps: -33, csat: 33, rd: 33 },
+  { id: 6, name: 'Franco Alvarez', responses: 2, nps: 0, csat: 100, rd: 100 },
+  { id: 7, name: 'Gaston Alvarez', responses: 3, nps: -33, csat: 33, rd: 33 },
+  { id: 8, name: 'Javier Rodriguez', responses: 6, nps: -33, csat: 50, rd: 33 },
+  { id: 9, name: 'Jeremías Flores', responses: 0, nps: 0, csat: 0, rd: 0 },
+  { id: 10, name: 'Karen Aranda', responses: 7, nps: -29, csat: 71, rd: 57 },
+  { id: 11, name: 'Karen Chavez', responses: 1, nps: 100, csat: 0, rd: 0 },
+  { id: 12, name: 'Lautaro Brocal', responses: 2, nps: 50, csat: 100, rd: 100 },
+  { id: 13, name: 'Macarena Gomez', responses: 3, nps: 33, csat: 67, rd: 67 },
+  { id: 14, name: 'Marcos Montenegro', responses: 2, nps: 50, csat: 100, rd: 100 },
+  { id: 15, name: 'Milagros Juncos', responses: 7, nps: -57, csat: 43, rd: 29 },
+  { id: 16, name: 'Nicolas Macagno', responses: 2, nps: 0, csat: 100, rd: 50 },
+  { id: 17, name: 'Victoria Martinez', responses: 0, nps: 0, csat: 0, rd: 0 },
+  { id: 18, name: 'Ismael Irirarte', responses: 1, nps: 100, csat: 100, rd: 100 },
+  { id: 19, name: 'Zaida Abreu', responses: 12, nps: 25, csat: 83, rd: 83 },
 ];
 
+// Inicialización de la base de datos
 export async function initializeDatabase(): Promise<void> {
   try {
-    // Verificar si la tabla ya existe
+    // Verificar si la tabla ya existe y tiene datos
     const tableExists = await db.select().from(users).execute();
     
     if (tableExists.length === 0) {
       // Si la tabla está vacía, insertar datos iniciales
       await db.insert(users).values(initialUserData).execute();
+      console.log('Datos iniciales insertados con éxito');
+    } else {
+      console.log('La tabla ya contiene datos, no se insertaron datos iniciales');
     }
   } catch (error) {
-    console.error('Error initializing database:', error);
+    console.error('Error al inicializar la base de datos:', error);
     // Si hay un error (por ejemplo, la tabla no existe), crearla e insertar datos
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS users (
@@ -42,17 +65,32 @@ export async function initializeDatabase(): Promise<void> {
       )
     `);
     await db.insert(users).values(initialUserData).execute();
+    console.log('Tabla creada e inicializada con datos');
   }
 }
 
+// Función para obtener todos los usuarios
 export async function getUsers(): Promise<UserRow[]> {
-  return await db.select().from(users).execute();
+  try {
+    const result = await db.select().from(users).execute();
+    return result;
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+    throw error;
+  }
 }
 
+// Función para actualizar un usuario
 export async function updateUser(user: UserRow): Promise<void> {
-  await db
-    .update(users)
-    .set(user)
-    .where(sql`id = ${user.id}`)
-    .execute();
+  try {
+    await db
+      .update(users)
+      .set(user)
+      .where(sql`id = ${user.id}`)
+      .execute();
+    console.log(`Usuario con ID ${user.id} actualizado con éxito`);
+  } catch (error) {
+    console.error('Error al actualizar usuario:', error);
+    throw error;
+  }
 }
