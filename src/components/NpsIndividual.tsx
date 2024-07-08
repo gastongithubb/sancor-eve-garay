@@ -103,7 +103,7 @@ const NpsIndividual: React.FC = () => {
             <h2>{user.name}</h2>
             <div style={{ marginBottom: '10px' }}>
               <label>
-                Respuestas: 
+                Encuestas: 
                 <input 
                   type="number" 
                   value={user.responses} 
