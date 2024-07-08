@@ -9,15 +9,22 @@ export default defineConfig({
     outDir: 'dist',
   },
   server: {
-    port: process.env.PORT || 3000, // Configura el puerto del servidor, opcionalmente desde una variable de entorno
+    port: process.env.PORT || 3000,
   },
   integrations: [
-    react(),     // Integra React con Astro
-    tailwind(),  // Integra Tailwind CSS con Astro
-    vercel(),    // Configura Astro para despliegues en Vercel
+    react(),
+    tailwind(),
+    vercel(),
   ],
-  routes: [
-    { src: "/", dest: "/index.astro" }, // Ruta para la raíz de la aplicación
-    // Agrega más rutas según sea necesario para tu aplicación
-  ],
+  vite: {
+    ssr: {
+      noExternal: ['pg'],
+    },
+    optimizeDeps: {
+      exclude: ['pg'],
+    },
+    define: {
+      'import.meta.env.POSTGRES_URL': JSON.stringify(process.env.POSTGRES_URL),
+    },
+  },
 });
