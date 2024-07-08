@@ -2,6 +2,8 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
+import db from '@astrojs/db';
+
 
 export default defineConfig({
   output: 'hybrid',
@@ -15,6 +17,7 @@ export default defineConfig({
     react(),
     tailwind(),
     vercel(),
+    db(),
   ],
   vite: {
     ssr: {

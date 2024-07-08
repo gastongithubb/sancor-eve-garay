@@ -1,12 +1,12 @@
 ---
 import Npsindividual from '../components/NpsIndividual';
+import { initializeDatabase } from '../db/schema';
 import Layout from '../layouts/Layout.astro';
-import Container from "../components/Container.astro"
-
-
+import Container from '../components/Container.astro';
 ---
-<Layout title="NPS Individual - Sancor Team Eve garay">
-    <Container>
-        <Npsindividual client:load/>
-    </Container>
+
+<Layout title="NPS Individual - Sancor Team Eve Garay">
+  <Container>
+    <Npsindividual client:only="react" />
+  </Container>
 </Layout>
