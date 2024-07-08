@@ -1,9 +1,13 @@
 import { sql } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/libsql';
+import { drizzle, LibSQLDatabase } from 'drizzle-orm/libsql';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { client } from './index';
 
-const db = drizzle(client);
+let db: LibSQLDatabase | null = null;
+
+if (client) {
+  db = drizzle(client);
+}
 
 // Definición de la tabla de usuarios
 export const users = sqliteTable('users', {
@@ -26,6 +30,11 @@ const initialUserData: UserRow[] = [
 
 // Inicialización de la base de datos
 export async function initializeDatabase(): Promise<void> {
+  if (!db) {
+    console.error('La base de datos no está disponible. Verifica las variables de entorno.');
+    return;
+  }
+
   try {
     // Verificar si la tabla ya existe y tiene datos
     const tableExists = await db.select().from(users).execute();
@@ -57,17 +66,27 @@ export async function initializeDatabase(): Promise<void> {
 
 // Función para obtener todos los usuarios
 export async function getUsers(): Promise<UserRow[]> {
+  if (!db) {
+    console.error('La base de datos no está disponible. Verifica las variables de entorno.');
+    return [];
+  }
+
   try {
     const result = await db.select().from(users).execute();
     return result;
   } catch (error) {
     console.error('Error al obtener usuarios:', error);
-    throw error;
+    return [];
   }
 }
 
 // Función para actualizar un usuario
 export async function updateUser(user: UserRow): Promise<void> {
+  if (!db) {
+    console.error('La base de datos no está disponible. Verifica las variables de entorno.');
+    return;
+  }
+
   try {
     await db
       .update(users)
@@ -77,6 +96,5 @@ export async function updateUser(user: UserRow): Promise<void> {
     console.log(`Usuario con ID ${user.id} actualizado con éxito`);
   } catch (error) {
     console.error('Error al actualizar usuario:', error);
-    throw error;
   }
 }

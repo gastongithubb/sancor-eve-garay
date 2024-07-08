@@ -39,7 +39,7 @@ const NpsIndividual: React.FC = () => {
 
   if (loading) return <div>Inicializando y cargando datos de usuarios...</div>;
   if (error) return <div>Error: {error}</div>;
-  if (users.length === 0) return <div>No se encontraron datos de usuarios. Por favor, verifica la conexión con la base de datos.</div>;
+  if (users.length === 0) return <div>No se encontraron datos de usuarios. Verifica la conexión con la base de datos y las variables de entorno.</div>;
 
   return (
     <div>
