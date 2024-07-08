@@ -55,26 +55,24 @@ const NpsIndividual: React.FC = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ marginBottom: '20px', padding: '5px', width: '200px' }}
       />
+      <ResponsiveContainer width="100%" height={500}>
+        <BarChart data={filteredUsers}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="responses" fill="#8884d8" name="Respuestas" />
+          <Bar dataKey="nps" fill="#82ca9d" name="NPS" />
+          <Bar dataKey="csat" fill="#ffc658" name="CSAT" />
+          <Bar dataKey="rd" fill="#ff7300" name="RD" />
+        </BarChart>
+      </ResponsiveContainer>
       {filteredUsers.map((user) => (
         <div key={user.id} style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
           <h2>{user.name}</h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={[user]}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="responses" fill="#8884d8" name="Respuestas" />
-              <Bar dataKey="nps" fill="#82ca9d" name="NPS" />
-              <Bar dataKey="csat" fill="#ffc658" name="CSAT" />
-              <Bar dataKey="rd" fill="#ff7300" name="RD" />
-            </BarChart>
-          </ResponsiveContainer>
-          <div style={{ marginTop: '10px' }}>
-            <button onClick={() => handleUpdateUser(user)}>
-              Incrementar Respuestas
-            </button>
-          </div>
+          <button onClick={() => handleUpdateUser(user)}>
+            Incrementar Respuestas
+          </button>
         </div>
       ))}
     </div>
