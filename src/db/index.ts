@@ -1,18 +1,19 @@
-import { createClient, type Client } from '@libsql/client';
+import { createClient } from '@libsql/client';
 
-// Estas variables deben ser definidas en tiempo de compilación
-const TURSO_CONNECTION_URL = import.meta.env.PUBLIC_TURSO_CONNECTION_URL as string;
-const TURSO_AUTH_TOKEN = import.meta.env.PUBLIC_TURSO_AUTH_TOKEN as string;
+const TURSO_CONNECTION_URL = import.meta.env.PUBLIC_TURSO_CONNECTION_URL;
+const TURSO_AUTH_TOKEN = import.meta.env.PUBLIC_TURSO_AUTH_TOKEN;
 
-let client: Client | null = null;
-
-if (TURSO_CONNECTION_URL && TURSO_AUTH_TOKEN) {
-  client = createClient({
-    url: TURSO_CONNECTION_URL,
-    authToken: TURSO_AUTH_TOKEN,
-  });
-} else {
-  console.warn('Las variables de entorno TURSO_CONNECTION_URL y TURSO_AUTH_TOKEN no están definidas. La funcionalidad de base de datos no estará disponible.');
+if (!TURSO_CONNECTION_URL || !TURSO_AUTH_TOKEN) {
+  console.error('Las variables de entorno TURSO_CONNECTION_URL y TURSO_AUTH_TOKEN deben estar definidas');
+  throw new Error('Configuración de base de datos incompleta');
 }
 
-export { client };
+export const client = createClient({
+  url: TURSO_CONNECTION_URL,
+  authToken: TURSO_AUTH_TOKEN,
+});
+
+// Prueba de conexión
+client.execute('SELECT 1')
+  .then(() => console.log('Conexión a la base de datos establecida con éxito'))
+  .catch(error => console.error('Error al conectar con la base de datos:', error));
