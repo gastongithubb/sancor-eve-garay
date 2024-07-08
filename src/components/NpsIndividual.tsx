@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers, type UserRow, updateUser } from '../components/lib/db/schema';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
 const NpsIndividual: React.FC = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -26,15 +26,32 @@ const NpsIndividual: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleUpdateUser = async (user: UserRow) => {
+  const handleUpdateUser = async (updatedUser: UserRow) => {
     try {
-      const updatedUser = { ...user, responses: user.responses + 1 };
       await updateUser(updatedUser);
-      setUsers(users.map(u => u.id === user.id ? updatedUser : u));
+      setUsers(users.map(u => u.id === updatedUser.id ? updatedUser : u));
     } catch (err) {
       console.error('Error al actualizar el usuario:', err);
       setError(`Error al actualizar el usuario: ${err instanceof Error ? err.message : String(err)}`);
     }
+  };
+
+  const handleChange = (userId: number, field: keyof UserRow, value: string) => {
+    setUsers(users.map(user => 
+      user.id === userId ? { ...user, [field]: Number(value) } : user
+    ));
+  };
+
+  const getColorForNps = (nps: number) => {
+    if (nps >= 15) return '#28a745'; // Verde
+    if (nps >= 0) return '#ffc107'; // Amarillo
+    return '#dc3545'; // Rojo
+  };
+
+  const getColorForCsatAndRd = (value: number) => {
+    if (value > 70) return '#28a745'; // Verde
+    if (value >= 65) return '#ffc107'; // Amarillo
+    return '#dc3545'; // Rojo
   };
 
   const filteredUsers = users.filter(user => 
@@ -56,25 +73,84 @@ const NpsIndividual: React.FC = () => {
         style={{ marginBottom: '20px', padding: '5px', width: '200px' }}
       />
       <ResponsiveContainer width="100%" height={500}>
-        <BarChart data={filteredUsers}>
+        <BarChart data={filteredUsers} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />
           <Bar dataKey="responses" fill="#8884d8" name="Respuestas" />
-          <Bar dataKey="nps" fill="#82ca9d" name="NPS" />
-          <Bar dataKey="csat" fill="#ffc658" name="CSAT" />
-          <Bar dataKey="rd" fill="#ff7300" name="RD" />
+          <Bar dataKey="nps" name="NPS">
+            {filteredUsers.map((user) => (
+              <Cell key={`cell-nps-${user.id}`} fill={getColorForNps(user.nps)} />
+            ))}
+          </Bar>
+          <Bar dataKey="csat" name="CSAT">
+            {filteredUsers.map((user) => (
+              <Cell key={`cell-csat-${user.id}`} fill={getColorForCsatAndRd(user.csat)} />
+            ))}
+          </Bar>
+          <Bar dataKey="rd" name="RD">
+            {filteredUsers.map((user) => (
+              <Cell key={`cell-rd-${user.id}`} fill={getColorForCsatAndRd(user.rd)} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
-      {filteredUsers.map((user) => (
-        <div key={user.id} style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
-          <h2>{user.name}</h2>
-          <button onClick={() => handleUpdateUser(user)}>
-            Incrementar Respuestas
-          </button>
-        </div>
-      ))}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        {filteredUsers.map((user) => (
+          <div key={user.id} style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '8px', width: '300px' }}>
+            <h2>{user.name}</h2>
+            <div style={{ marginBottom: '10px' }}>
+              <label>
+                Respuestas: 
+                <input 
+                  type="number" 
+                  value={user.responses} 
+                  onChange={(e) => handleChange(user.id, 'responses', e.target.value)} 
+                  style={{ width: '100%' }}
+                />
+              </label>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>
+                NPS: 
+                <input 
+                  type="number" 
+                  value={user.nps} 
+                  onChange={(e) => handleChange(user.id, 'nps', e.target.value)} 
+                  style={{ width: '100%' }}
+                />
+              </label>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>
+                CSAT: 
+                <input 
+                  type="number" 
+                  value={user.csat} 
+                  onChange={(e) => handleChange(user.id, 'csat', e.target.value)} 
+                  style={{ width: '100%' }}
+                />
+              </label>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <label>
+                RD: 
+                <input 
+                  type="number" 
+                  value={user.rd} 
+                  onChange={(e) => handleChange(user.id, 'rd', e.target.value)} 
+                  style={{ width: '100%' }}
+                />
+              </label>
+            </div>
+            <button onClick={() => handleUpdateUser(user)} style={{ width: '100%' }}>
+              Guardar Cambios
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
