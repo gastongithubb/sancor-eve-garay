@@ -14,14 +14,7 @@ export default defineConfig({
   },
   integrations: [react(), tailwind(), vercel(),],
   vite: {
-    ssr: {
-      noExternal: ['pg']
-    },
-    optimizeDeps: {
-      exclude: ['pg']
-    },
-    define: {
-      'import.meta.env.POSTGRES_URL': JSON.stringify(process.env.POSTGRES_URL)
-    }
+    'import.meta.env.PUBLIC_TURSO_CONNECTION_URL': JSON.stringify(process.env.PUBLIC_TURSO_CONNECTION_URL),
+      'import.meta.env.PUBLIC_TURSO_AUTH_TOKEN': JSON.stringify(process.env.PUBLIC_TURSO_AUTH_TOKEN),
   }
 });

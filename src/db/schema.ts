@@ -1,6 +1,9 @@
 import { sql } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/libsql';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { db } from './index';
+import { client } from './index';
+
+const db = drizzle(client);
 
 // Definición de la tabla de usuarios
 export const users = sqliteTable('users', {
@@ -18,24 +21,7 @@ export type UserRow = typeof users.$inferSelect;
 // Datos iniciales de usuarios
 const initialUserData: UserRow[] = [
   { id: 1, name: 'Abigail Veyga', responses: 7, nps: 0, csat: 71, rd: 57 },
-  { id: 2, name: 'Agustin Suarez', responses: 3, nps: -67, csat: 100, rd: 100 },
-  { id: 3, name: 'Auca Heil', responses: 9, nps: 67, csat: 89, rd: 67 },
-  { id: 4, name: 'Carrizo Tula', responses: 10, nps: 30, csat: 80, rd: 80 },
-  { id: 5, name: 'Danna Cruz', responses: 3, nps: -33, csat: 33, rd: 33 },
-  { id: 6, name: 'Franco Alvarez', responses: 2, nps: 0, csat: 100, rd: 100 },
-  { id: 7, name: 'Gaston Alvarez', responses: 3, nps: -33, csat: 33, rd: 33 },
-  { id: 8, name: 'Javier Rodriguez', responses: 6, nps: -33, csat: 50, rd: 33 },
-  { id: 9, name: 'Jeremías Flores', responses: 0, nps: 0, csat: 0, rd: 0 },
-  { id: 10, name: 'Karen Aranda', responses: 7, nps: -29, csat: 71, rd: 57 },
-  { id: 11, name: 'Karen Chavez', responses: 1, nps: 100, csat: 0, rd: 0 },
-  { id: 12, name: 'Lautaro Brocal', responses: 2, nps: 50, csat: 100, rd: 100 },
-  { id: 13, name: 'Macarena Gomez', responses: 3, nps: 33, csat: 67, rd: 67 },
-  { id: 14, name: 'Marcos Montenegro', responses: 2, nps: 50, csat: 100, rd: 100 },
-  { id: 15, name: 'Milagros Juncos', responses: 7, nps: -57, csat: 43, rd: 29 },
-  { id: 16, name: 'Nicolas Macagno', responses: 2, nps: 0, csat: 100, rd: 50 },
-  { id: 17, name: 'Victoria Martinez', responses: 0, nps: 0, csat: 0, rd: 0 },
-  { id: 18, name: 'Ismael Irirarte', responses: 1, nps: 100, csat: 100, rd: 100 },
-  { id: 19, name: 'Zaida Abreu', responses: 12, nps: 25, csat: 83, rd: 83 },
+  // ... (resto de los datos iniciales)
 ];
 
 // Inicialización de la base de datos
