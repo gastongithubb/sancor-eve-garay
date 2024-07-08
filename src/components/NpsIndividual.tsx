@@ -6,7 +6,6 @@ const NpsIndividual: React.FC = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const initAndFetchUsers = async () => {
@@ -38,10 +37,6 @@ const NpsIndividual: React.FC = () => {
     }
   };
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   if (loading) return <div>Cargando datos de usuarios...</div>;
   if (error) return <div>Error: {error}</div>;
   if (users.length === 0) return <div>No se encontraron datos de usuarios.</div>;
@@ -49,14 +44,7 @@ const NpsIndividual: React.FC = () => {
   return (
     <div>
       <h1>Métricas de Usuarios</h1>
-      <input
-        type="text"
-        placeholder="Buscar por nombre..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: '20px', padding: '5px', width: '200px' }}
-      />
-      {filteredUsers.map((user) => (
+      {users.map((user) => (
         <div key={user.id} style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
           <h2>{user.name}</h2>
           <ResponsiveContainer width="100%" height={300}>
