@@ -79,7 +79,7 @@ const NpsIndividual: React.FC = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="responses" fill="#8884d8" name="Respuestas" />
+          <Bar dataKey="responses" fill="#8884d8" name="Encuestas" />
           <Bar dataKey="nps" name="NPS">
             {filteredUsers.map((user) => (
               <Cell key={`cell-nps-${user.id}`} fill={getColorForNps(user.nps)} />
