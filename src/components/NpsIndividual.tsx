@@ -6,6 +6,7 @@ const NpsIndividual: React.FC = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const initAndFetchUsers = async () => {
@@ -28,24 +29,35 @@ const NpsIndividual: React.FC = () => {
 
   const handleUpdateUser = async (user: UserRow) => {
     try {
-      await updateUser(user);
-      const updatedUsers = await getUsers();
-      setUsers(updatedUsers);
+      const updatedUser = { ...user, responses: user.responses + 1 };
+      await updateUser(updatedUser);
+      setUsers(users.map(u => u.id === user.id ? updatedUser : u));
     } catch (err) {
       console.error('Error al actualizar el usuario:', err);
       setError(`Error al actualizar el usuario: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 
-  if (loading) return <div>Inicializando y cargando datos de usuarios...</div>;
+  const filteredUsers = users.filter(user => 
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) return <div>Cargando datos de usuarios...</div>;
   if (error) return <div>Error: {error}</div>;
-  if (users.length === 0) return <div>No se encontraron datos de usuarios. Verifica la conexión con la base de datos y las variables de entorno.</div>;
+  if (users.length === 0) return <div>No se encontraron datos de usuarios.</div>;
 
   return (
     <div>
       <h1>Métricas de Usuarios</h1>
-      {users.map((user) => (
-        <div key={user.id} style={{ marginBottom: '30px' }}>
+      <input
+        type="text"
+        placeholder="Buscar por nombre..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '20px', padding: '5px', width: '200px' }}
+      />
+      {filteredUsers.map((user) => (
+        <div key={user.id} style={{ marginBottom: '30px', border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
           <h2>{user.name}</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={[user]}>
@@ -59,9 +71,11 @@ const NpsIndividual: React.FC = () => {
               <Bar dataKey="rd" fill="#ff7300" name="RD" />
             </BarChart>
           </ResponsiveContainer>
-          <button onClick={() => handleUpdateUser({ ...user, responses: user.responses + 1 })}>
-            Incrementar Respuestas
-          </button>
+          <div style={{ marginTop: '10px' }}>
+            <button onClick={() => handleUpdateUser(user)}>
+              Incrementar Respuestas
+            </button>
+          </div>
         </div>
       ))}
     </div>

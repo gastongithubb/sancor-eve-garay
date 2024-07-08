@@ -1,0 +1,49 @@
+<!DOCTYPE html><!-- ---
+import Container from "../components/Container.astro"
+import Layout from '../layouts/Layout.astro';
+import articlesData from '../components/Data/articles.json';
+import ArticleIcon from "../components/Icons/ArticleIcon.astro";
+import VideoIcon from "../components/Icons/VideoIcon.astro";
+---
+
+<Layout title="Positivus - Blog">
+	<main class="space-y-20">
+		<Container>
+            <div class="max-w-screen-xl px-4 py-8 mx-auto lg:py-16 lg:px-6">
+                <div class="max-w-screen-sm mx-auto mb-8 text-center lg:mb-16">
+                    <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900 lg:text-4xl">Our Blog</h2>
+                    <p class="font-light text-gray-500 sm:text-xl">We use an agile approach to test assumptions and connect with the needs of your audience early and often.</p>
+                </div> 
+                <div class="grid gap-8 lg:grid-cols-2">
+                    {
+                    articlesData.map(({ id, type, title, publish_date, brief, author, authorImage} ) => (
+                      <article class="p-6 bg-white border border-gray-200 rounded-3xl shadow-card">
+                          <div class="flex items-center justify-between mb-5 text-gray-500">
+                              <span class="bg-lime text-black text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded">
+                                {type == 'Article' ? (<ArticleIcon />) : (<VideoIcon />)}
+                                {type}
+                              </span>
+                              <span class="text-sm">{publish_date}</span>
+                          </div>
+                          <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{title}</h2>
+                          <p class="mb-5 font-light text-gray-500" style="white-space: pre-line">{brief}</p>
+                          <div class="flex items-center justify-between">
+                              <div class="flex items-center space-x-4">
+                                <img class="rounded-full w-7 h-7" src={authorImage} alt={author + " cover"} />
+                                <span class="font-medium">
+                                    {author}
+                                </span>
+                              </div>
+                              <a href={`/blogs/${id}`} class="inline-flex items-center font-medium text-black hover:text-lime">
+                                  Read more
+                                  <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                              </a>
+                          </div>
+                      </article> 
+                    ))
+                    }
+                </div>  
+            </div>
+        </Container>
+	</main>
+</Layout> -->
