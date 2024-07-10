@@ -1,0 +1,42 @@
+/* NotFound.css */
+
+.not-found-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .not-found-content {
+    max-width: 400px;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    color: #2ecc71;
+  }
+  
+  .medicine-icon {
+    width: 150px;
+    height: 150px;
+    fill: #2ecc71;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #27ae60;
+  }
+  

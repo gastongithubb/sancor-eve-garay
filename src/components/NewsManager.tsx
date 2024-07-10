@@ -7,7 +7,7 @@ const NewsManager: React.FC = () => {
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
   const [publishDate, setPublishDate] = useState('');
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga inicial
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchNews();
@@ -17,9 +17,10 @@ const NewsManager: React.FC = () => {
     try {
       const newsData = await getNews();
       setNews(newsData);
-      setLoading(false); // Indicar que la carga inicial ha finalizado
+      setLoading(false);
     } catch (error) {
       console.error('Error al obtener novedades:', error);
+      setLoading(false); // Asegurarse de manejar el estado de carga en caso de error
     }
   };
 
@@ -48,7 +49,7 @@ const NewsManager: React.FC = () => {
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando Novedades.</p>
+      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando Novedades</p>
     </div>
   );
 
