@@ -1,9 +1,17 @@
-import { client } from './index';
+// lib/db/schema.ts
+
+import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { config } from '../../../config';
 
-const db = drizzle(client);
+const client = createClient({
+  url: config.tursoConnectionUrl,
+  authToken: config.tursoAuthToken
+});
+
+export const db = drizzle(client);
 
 export const employees = sqliteTable('employees', {
   id: integer('id').primaryKey(),
@@ -26,9 +34,7 @@ export const breakSchedules = sqliteTable('break_schedules', {
   week: integer('week').notNull(),
   month: integer('month').notNull(),
   year: integer('year').notNull(),
-}, (table) => ({
-  uniqueSchedule: primaryKey(table.employeeId, table.day, table.week, table.month, table.year)
-}));
+});
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey(),
@@ -39,9 +45,17 @@ export const users = sqliteTable('users', {
   rd: integer('rd').notNull().default(0),
 });
 
+export const novedades = sqliteTable('novedades', {
+  id: integer('id').primaryKey(),
+  url: text('url').notNull(),
+  title: text('title').notNull(),
+  publishDate: text('publish_date').notNull(),
+});
+
 export type EmployeeRow = typeof employees.$inferSelect;
 export type BreakScheduleRow = typeof breakSchedules.$inferSelect;
 export type UserRow = typeof users.$inferSelect;
+export type NovedadesRow = typeof novedades.$inferSelect;
 
 async function ensureTablesExist() {
   await client.execute(`
@@ -67,8 +81,7 @@ async function ensureTablesExist() {
       end_time TEXT NOT NULL,
       week INTEGER NOT NULL,
       month INTEGER NOT NULL,
-      year INTEGER NOT NULL,
-      UNIQUE(employee_id, day, week, month, year)
+      year INTEGER NOT NULL
     )
   `);
 
@@ -80,6 +93,15 @@ async function ensureTablesExist() {
       nps INTEGER NOT NULL DEFAULT 0,
       csat INTEGER NOT NULL DEFAULT 0,
       rd INTEGER NOT NULL DEFAULT 0
+    )
+  `);
+
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS novedades (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      url TEXT NOT NULL,
+      title TEXT NOT NULL,
+      publish_date TEXT NOT NULL
     )
   `);
 }
@@ -133,8 +155,7 @@ export async function updateBreakSchedule(schedule: Omit<BreakScheduleRow, 'id'>
   try {
     console.log('Intentando actualizar horario de break:', schedule);
     
-    // Primero, intentamos actualizar un registro existente
-    const updateResult = await db
+    const result = await db
       .update(breakSchedules)
       .set({
         startTime: schedule.startTime,
@@ -149,8 +170,7 @@ export async function updateBreakSchedule(schedule: Omit<BreakScheduleRow, 'id'>
       `)
       .run();
 
-    // Si no se actualizó ningún registro, insertamos uno nuevo
-    if (updateResult.rowsAffected === 0) {
+    if (result.rowsAffected === 0) {
       await db.insert(breakSchedules)
         .values(schedule)
         .run();
@@ -162,7 +182,6 @@ export async function updateBreakSchedule(schedule: Omit<BreakScheduleRow, 'id'>
     throw new Error(`No se pudo actualizar el horario de break: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
-
 
 export async function getUsers(): Promise<UserRow[]> {
   try {
@@ -184,5 +203,34 @@ export async function updateUser(user: UserRow): Promise<void> {
   } catch (error: unknown) {
     console.error('Error al actualizar usuario:', error);
     throw new Error(`No se pudo actualizar el usuario: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+export async function getNews(): Promise<NovedadesRow[]> {
+  try {
+    await ensureTablesExist();
+    return await db.select().from(novedades).all();
+  } catch (error: unknown) {
+    console.error('Error al obtener novedades:', error);
+    throw new Error(`No se pudieron obtener las novedades: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+export async function addNews(newsItem: Omit<NovedadesRow, 'id'>): Promise<void> {
+  try {
+    await ensureTablesExist();
+    await db.insert(novedades).values(newsItem).run();
+  } catch (error: unknown) {
+    console.error('Error al agregar novedad:', error);
+    throw new Error(`No se pudo agregar la novedad: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+export async function deleteNews(id: number): Promise<void> {
+  try {
+    await db.delete(novedades).where(sql`id = ${id}`).run();
+  } catch (error: unknown) {
+    console.error('Error al eliminar novedad:', error);
+    throw new Error(`No se pudo eliminar la novedad: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
