@@ -26,6 +26,14 @@
         },
         {
             "title": "CX Agent",
+            "name": "Antonella Casas",
+            "description": "KONECTA - Sancor Salud",
+            "profile": "/team/none.webp",
+            "link": "/",
+            "cumpleaños": "15 de Julio"
+        },
+        {
+            "title": "CX Agent",
             "name": "Auca Heil",
             "description": "KONECTA - Sancor Salud",
             "profile": "/team/auca.jpg",
