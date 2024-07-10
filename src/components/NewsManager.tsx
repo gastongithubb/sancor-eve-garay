@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getNews, addNews, deleteNews, type NovedadesRow } from './lib/db/schema';
 import { Loader2 } from 'lucide-react';
+import { getNews, addNews, deleteNews, type NovedadesRow } from './lib/db/schema';
 
 const NewsManager: React.FC = () => {
   const [news, setNews] = useState<NovedadesRow[]>([]);
@@ -8,6 +8,7 @@ const NewsManager: React.FC = () => {
   const [title, setTitle] = useState('');
   const [publishDate, setPublishDate] = useState('');
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchNews();
@@ -15,43 +16,70 @@ const NewsManager: React.FC = () => {
 
   const fetchNews = async () => {
     try {
+      setLoading(true);
+      setErrorMessage(null);
       const newsData = await getNews();
       setNews(newsData);
-      setLoading(false);
     } catch (error) {
       console.error('Error al obtener novedades:', error);
-      setLoading(false); // Asegurarse de manejar el estado de carga en caso de error
+      setErrorMessage('Error al cargar las novedades. Por favor, intente nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setLoading(true);
       await addNews({ url, title, publishDate });
       setUrl('');
       setTitle('');
       setPublishDate('');
-      fetchNews();
+      await fetchNews();
     } catch (error) {
       console.error('Error al agregar novedad:', error);
+      setErrorMessage('Error al agregar la novedad. Por favor, intente nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
+      setLoading(true);
       await deleteNews(id);
-      fetchNews();
+      await fetchNews();
     } catch (error) {
       console.error('Error al eliminar novedad:', error);
+      setErrorMessage('Error al eliminar la novedad. Por favor, intente nuevamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando Novedades</p>
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+        <p className="mt-4 text-lg font-semibold text-gray-700">Cargando Novedades</p>
+      </div>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <p className="text-lg font-semibold text-red-600">{errorMessage}</p>
+        <button 
+          onClick={fetchNews}
+          className="px-4 py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600"
+        >
+          Intentar nuevamente
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl p-4 mx-auto">
