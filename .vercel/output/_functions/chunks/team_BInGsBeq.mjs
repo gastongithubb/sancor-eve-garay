@@ -1,0 +1,215 @@
+import { k as createComponent, l as renderTemplate, n as maybeRenderHead, q as createAstro } from './astro/server_D8vA9utB.mjs';
+import 'kleur/colors';
+import 'html-escaper';
+import 'clsx';
+
+const $$Astro = createAstro();
+const $$Topic = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$Topic;
+  const { title, description } = Astro2.props;
+  return renderTemplate`${maybeRenderHead()}<div class="grid place-items-center gap-5 mb-10 md:flex"> <span class="text-4xl sm:text-6xl px-1.5 font-medium bg-lime rounded-md"> ${title} </span> <p class="text-xl font-normal text-center md:text-start lg:w-2/3"> ${description} </p> </div>`;
+}, "/Users/macbookpro/Desktop/equipo-2/src/components/Topic.astro", void 0);
+
+const team = [
+	{
+		title: "Supervisora",
+		name: "Evelin Garay",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/eve.jpg",
+		link: "/",
+		"cumpleaños": "1980-05-15"
+	},
+	{
+		title: "CX Agent",
+		name: "Abigail Veyga",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/abi.jpg",
+		link: "/",
+		"cumpleaños": "31 de Agosto"
+	},
+	{
+		title: "CX Agent",
+		name: "Agustin Suarez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/agustin.jpg",
+		link: "/",
+		"cumpleaños": "08 de Marzo"
+	},
+	{
+		title: "CX Agent",
+		name: "Antonella Casas",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/none.webp",
+		link: "/",
+		"cumpleaños": "15 de Julio"
+	},
+	{
+		title: "CX Agent",
+		name: "Auca Heil",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/auca.jpg",
+		link: "/",
+		"cumpleaños": "27 de Febrero"
+	},
+	{
+		title: "CX Agent",
+		name: "Maria Tula",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/tula.jpg",
+		link: "/",
+		"cumpleaños": "26 de Enero"
+	},
+	{
+		title: "CX Agent",
+		name: "Danna Cruz",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/none.webp",
+		link: "/",
+		"cumpleaños": "02 de Junio"
+	},
+	{
+		title: "CX Agent",
+		name: "Franco Alvarez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/franco.jpg",
+		link: "/",
+		"cumpleaños": "05 de Julio"
+	},
+	{
+		title: "CX Agent",
+		name: "Gaston Alvarez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/gaston.jpeg",
+		link: "/",
+		"cumpleaños": "29 de Diciembre"
+	},
+	{
+		title: "CX Agent",
+		name: "Javier Rodriguez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/none.webp",
+		link: "/",
+		"cumpleaños": "18 de Noviembre"
+	},
+	{
+		title: "CX Agent",
+		name: "Jeremías Flores",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/jeremias.jpg",
+		link: "/",
+		"cumpleaños": "10 de Abril"
+	},
+	{
+		title: "CX Agent",
+		name: "Karen Aranda",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/none.webp",
+		link: "/",
+		"cumpleaños": "07 de Julio"
+	},
+	{
+		title: "CX Agent",
+		name: "Karen Chavez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/karenj.jpg",
+		link: "/",
+		"cumpleaños": "25 de Octubre"
+	},
+	{
+		title: "CX Agent",
+		name: "Lautaro Brocal",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/lauta.jpg",
+		link: "/",
+		"cumpleaños": "03 de Septiembre"
+	},
+	{
+		title: "CX Agent",
+		name: "Macarena Gomez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/maca.jpg",
+		link: "/",
+		"cumpleaños": "15 de Enero"
+	},
+	{
+		title: "CX Agent",
+		name: "Marcos Montenegro",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/marcos.jpg",
+		link: "/",
+		"cumpleaños": "31 de Diciembre"
+	},
+	{
+		title: "CX Agent",
+		name: "Milagros Juncos",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/mili.jpg",
+		link: "/",
+		"cumpleaños": "23 de Enero"
+	},
+	{
+		title: "CX Agent",
+		name: "Nicolas Macagno",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/lean.jpg",
+		link: "/",
+		"cumpleaños": "05 de Marzo"
+	},
+	{
+		title: "CX Agent",
+		name: "Victoria Martinez",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/vicky.jpg",
+		link: "/",
+		"cumpleaños": "14 de Mayo"
+	},
+	{
+		title: "CX Agent",
+		name: "Ismael Irirarte",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/ismael.jpg",
+		link: "/",
+		"cumpleaños": "15 de Septiembre"
+	},
+	{
+		title: "CX Agent",
+		name: "Zaida Abregu",
+		description: "KONECTA - Sancor Salud",
+		profile: "/team/zaida.jpg",
+		link: "/",
+		"cumpleaños": "26 de Abril"
+	}
+];
+const process = [
+	{
+		label: "Desarrolla Empatía y Escucha Activa",
+		content: "Prioriza entender las preocupaciones y necesidades de cada paciente. Escucha activamente y muestra empatía en cada interacción para construir relaciones sólidas."
+	},
+	{
+		label: "Research",
+		content: "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+	},
+	{
+		label: "Implementation",
+		content: "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+	},
+	{
+		label: "Optimization",
+		content: "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+	},
+	{
+		label: "Reporting",
+		content: "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+	},
+	{
+		label: "Improvement",
+		content: "During the initial consultation, we will discuss your business goals and objectives, target audience, and current marketing efforts. This will allow us to understand your needs and tailor our services to best fit your requirements."
+	}
+];
+const teamData = {
+	team: team,
+	process: process
+};
+
+export { $$Topic as $, teamData as t };
