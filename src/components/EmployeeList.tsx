@@ -6,7 +6,7 @@ import {
   updateBreakSchedule, 
   type EmployeeRow, 
   type BreakScheduleRow
-} from './lib/db/schema';
+} from './lib/db/db-users';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from './lib/ui/table';
 import { Loader2 } from 'lucide-react';
 

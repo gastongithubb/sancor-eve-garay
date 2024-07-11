@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, type UserRow, updateUser } from '../components/lib/db/schema';
+import { getUsers, type UserRow, updateUser } from '../components/lib/db/db-users';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
 const NpsIndividual: React.FC = () => {
