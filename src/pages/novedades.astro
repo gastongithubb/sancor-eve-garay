@@ -1,11 +1,10 @@
 ---
-import NewsManager from '../components/NewsManager';
 import Layout from '../layouts/Layout.astro';
-import Container from '../components/Container.astro';
+import NewsManager from '../components/NewsManager';
 ---
 
-<Layout title="Lista de Novedades">
-  <Container>
-    <NewsManager />
-  </Container>
+<Layout title="Gestor de Noticias">
+  <main>
+    <NewsManager client:load />
+  </main>
 </Layout>
