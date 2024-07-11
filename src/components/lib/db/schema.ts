@@ -1,76 +1,79 @@
-import { createClient } from '@libsql/client';
+import { client } from './index';
 import { drizzle } from 'drizzle-orm/libsql';
 import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { config } from '../../../config';
 
-const client = createClient({
-  url: config.tursoConnectionUrl,
-  authToken: config.tursoAuthToken
-});
+const db = drizzle(client);
 
-export const db = drizzle(client);
-
-export const novedades = sqliteTable('novedades', {
+// Definición de la tabla de noticias
+export const news = sqliteTable('news', {
   id: integer('id').primaryKey(),
   url: text('url').notNull(),
   title: text('title').notNull(),
   publishDate: text('publish_date').notNull(),
 });
 
-export type NovedadesRow = typeof novedades.$inferSelect;
+// Tipo de fila para noticias
+export type NovedadesRow = typeof news.$inferSelect;
 
-async function ensureTablesExist() {
-  console.log('Asegurando que las tablas existen');
+// Función para manejar errores de base de datos
+function handleDatabaseError(error: unknown, operation: string): never {
+  console.error(`Error en operación de base de datos (${operation}):`, error);
+  throw new Error(`Error en ${operation}: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+// Función para asegurar que la tabla de noticias exista
+async function ensureNewsTableExists() {
   try {
     await client.execute(`
-      CREATE TABLE IF NOT EXISTS novedades (
+      CREATE TABLE IF NOT EXISTS news (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         url TEXT NOT NULL,
         title TEXT NOT NULL,
         publish_date TEXT NOT NULL
       )
     `);
-    console.log('Tabla novedades verificada o creada');
+    console.log('Tabla de noticias creada o ya existente');
   } catch (error) {
-    console.error('Error al crear la tabla novedades:', error);
+    console.error('Error al crear la tabla de noticias:', error);
     throw error;
   }
 }
 
+// Función para obtener todas las noticias
 export async function getNews(): Promise<NovedadesRow[]> {
-  console.log('Iniciando getNews');
   try {
-    await ensureTablesExist();
-    console.log('Tablas verificadas, obteniendo novedades');
-    const result = await db.select().from(novedades).all();
-    console.log('Novedades obtenidas:', result);
-    return result;
-  } catch (error: unknown) {
-    console.error('Error al obtener novedades:', error);
-    throw new Error(`No se pudieron obtener las novedades: ${error instanceof Error ? error.message : String(error)}`);
+    await ensureNewsTableExists();
+    return await db.select().from(news).all();
+  } catch (error) {
+    handleDatabaseError(error, 'obtener noticias');
   }
 }
 
+// Función para añadir una nueva noticia
 export async function addNews(newsItem: Omit<NovedadesRow, 'id'>): Promise<void> {
-  console.log('Iniciando addNews', newsItem);
   try {
-    await ensureTablesExist();
-    await db.insert(novedades).values(newsItem).run();
-    console.log('Novedad agregada exitosamente');
-  } catch (error: unknown) {
-    console.error('Error al agregar novedad:', error);
-    throw new Error(`No se pudo agregar la novedad: ${error instanceof Error ? error.message : String(error)}`);
+    await ensureNewsTableExists();
+    await db.insert(news).values(newsItem).run();
+  } catch (error) {
+    handleDatabaseError(error, 'añadir noticia');
   }
 }
 
+// Función para eliminar una noticia
 export async function deleteNews(id: number): Promise<void> {
-  console.log('Iniciando deleteNews', id);
   try {
-    await db.delete(novedades).where(sql`id = ${id}`).run();
-    console.log('Novedad eliminada exitosamente');
-  } catch (error: unknown) {
-    console.error('Error al eliminar novedad:', error);
-    throw new Error(`No se pudo eliminar la novedad: ${error instanceof Error ? error.message : String(error)}`);
+    await db.delete(news).where(sql`id = ${id}`).run();
+  } catch (error) {
+    handleDatabaseError(error, 'eliminar noticia');
+  }
+}
+
+// Función para actualizar una noticia (opcional, por si la necesitas en el futuro)
+export async function updateNews(id: number, newsItem: Omit<NovedadesRow, 'id'>): Promise<void> {
+  try {
+    await db.update(news).set(newsItem).where(sql`id = ${id}`).run();
+  } catch (error) {
+    handleDatabaseError(error, 'actualizar noticia');
   }
 }
