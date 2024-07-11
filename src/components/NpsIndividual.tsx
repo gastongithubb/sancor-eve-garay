@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getUsers, type UserRow, updateUser } from '../components/lib/db/db-users';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
+import { Loader2 } from 'lucide-react';
 
 const NpsIndividual: React.FC = () => {
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -58,8 +59,17 @@ const NpsIndividual: React.FC = () => {
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div>Cargando datos de usuarios...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando programacion semanal.</p>
+    </div>
+  );
+  if (error) return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <p className="text-lg font-semibold text-red-600">{error}</p>
+    </div>
+  );
   if (users.length === 0) return <div>No se encontraron datos de usuarios.</div>;
 
   return (
