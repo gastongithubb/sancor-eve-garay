@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { registerUser } from './lib/db/db-users'; // Asegúrate de que esta importación sea correcta
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -12,25 +14,15 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = data.redirectUrl;
+      const user = await registerUser(email, password, name);
+      if (user) {
+        console.log('Usuario registrado:', user);
+        // Aquí puedes redirigir al usuario o actualizar el estado de la aplicación
       } else {
-        setError(data.message);
+        setError('Error al registrar el usuario');
       }
     } catch (error) {
-      console.error('Error durante el inicio de sesión:', error);
-      setError('Ocurrió un error durante el inicio de sesión');
+      setError('Error al registrar. Por favor, intenta de nuevo.');
     }
   };
 
@@ -38,8 +30,8 @@ const LoginForm = () => {
     <div className="flex items-center justify-center min-h-screen font-SpaceGrotesk">
       <div className="w-full max-w-md p-6 m-4 space-y-6 rounded-lg bg-zinc-800 shadow-card">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">Iniciar sesión</h2>
-          <p className="mt-2 text-sm text-zinc-400 sm:text-base">Accede a tu cuenta</p>
+          <h2 className="text-2xl font-bold text-white sm:text-3xl">Registrarse</h2>
+          <p className="mt-2 text-sm text-zinc-400 sm:text-base">Crea tu cuenta</p>
         </div>
         {error && (
           <div className="p-2 text-sm text-red-500 bg-red-100 rounded">
@@ -47,6 +39,23 @@ const LoginForm = () => {
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-zinc-300">
+              Nombre
+            </label>
+            <div className="mt-1">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-3 py-2 text-white border rounded-md placeholder-zinc-500 bg-zinc-700 border-zinc-600 focus:outline-none focus:ring-2 focus:ring-lime focus:border-transparent"
+                placeholder="Tu nombre"
+              />
+            </div>
+          </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
               Correo electrónico
@@ -97,14 +106,14 @@ const LoginForm = () => {
               type="submit"
               className="w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-lime hover:bg-white hover:text-lime focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime"
             >
-              Iniciar sesión
+              Registrarse
             </button>
           </div>
         </form>
         <p className="text-xs text-center text-zinc-400 sm:text-sm">
-          ¿No tienes una cuenta?{' '}
-          <a href="/register" className="font-medium text-lime hover:text-white">
-            Registrarse
+          ¿Ya tienes una cuenta?{' '}
+          <a href="/login" className="font-medium text-lime hover:text-white">
+            Iniciar sesión
           </a>
         </p>
       </div>
@@ -112,4 +121,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
