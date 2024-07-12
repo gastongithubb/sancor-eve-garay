@@ -29,9 +29,9 @@ const firstThreeMembers = teamData.team.slice(0, 3); // Obtener solo los tres pr
     <div class="flex-row items-center py-5" id="team">
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3">
             {
-            firstThreeMembers.map(({ title, description, name, link, profile}, index) => (
+            firstThreeMembers.map(({ title, description, contrato, email, name, link, profile}, index) => (
                 <div class="h-[331px] px-[35px] py-10 bg-white rounded-[45px] shadow-card border border-zinc-900 flex-col justify-start items-start gap-2.5 inline-flex text-black">
-                    <div class="flex flex-col items-start justify-start gap-7">
+                    <div class="flex flex-col items-start justify-start gap-3">
                         <div class="inline-flex items-start self-stretch justify-start">
                             <div class="flex items-center justify-start gap-8 grow shrink basis-0">
                                 <div class="h-[102.82px] w-[102.82px] rounded-[50%] overflow-hidden relative"> {/* Estilo para mantener las imágenes cuadradas y con bordes redondeados */}
@@ -48,6 +48,8 @@ const firstThreeMembers = teamData.team.slice(0, 3); // Obtener solo los tres pr
                         </div>
                         <hr class="w-full border border-black"/>
                         <p class="text-sm md:text-lg">{description}</p>
+                        <p class="text-sm md:text-sm">{contrato}</p>
+                        <p class="text-sm md:text-sm">{email}</p>
                     </div>
                 </div>
             ))
