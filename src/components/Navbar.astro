@@ -27,7 +27,7 @@ import Container from "./Container.astro"
 ---
 
 <header class="mt-20">
-  <nav class="fixed top-0 left-0 z-50 w-full bg-white">
+  <nav class="fixed top-0 left-0 z-50 w-full bg-white shadow-card">
     <Container class="pt-8">
       <div class="flex flex-wrap items-center justify-between py-3 mx-auto">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -42,23 +42,23 @@ import Container from "./Container.astro"
         <div class="hidden w-full md:flex md:items-center md:w-auto" id="navbar-default">
           <ul class="flex flex-col p-4 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:p-0 font-SpaceGrotesk">
             {navLinks.map(link => (
-              <li class="relative">
+              <li class="relative group">
                 {link.dropdown ? (
-                  <div class="dropdown">
-                    <button class="flex items-center px-3 py-2 text-black roundek md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">
+                  <div>
+                    <a href="#" class="flex items-center px-3 py-2 text-black rounded md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">
                       {link.label}
                       <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                       </svg>
-                    </button>
-                    <div class="absolute left-0 z-10 hidden w-48 mt-2 bg-white border rounded-md dropdown-menu shadow-card">
+                    </a>
+                    <div class="absolute left-0 hidden mt-2 space-y-2 bg-white border rounded-md border-zinc-200 shadow-card group-hover:block">
                       {link.items.map(item => (
-                        <a href={item.href} class="block px-4 py-2 text-sm text-black">{item.label}</a>
+                        <a href={item.href} class="block px-4 py-2 text-sm text-black hover:bg-zinc-100">{item.label}</a>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <a href={link.href} class="block px-3 py-2 text-black rounded md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">{link.label}</a>
+                  <a href={link.href} class="block px-3 py-2 text-black rounded hover:bg-zinc-100 md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">{link.label}</a>
                 )}
               </li>
             ))}
@@ -75,80 +75,27 @@ import Container from "./Container.astro"
   </nav>
 </header>
 
+<main class="mt-32">
+  <!-- Aquí va tu contenido principal -->
+</main>
+
 <script is:inline>
-  function initializeNavbar() {
-    const dropdownButtons = document.querySelectorAll('[id^="dropdown-button-"]');
-    const dropdownMenus = document.querySelectorAll('[id^="dropdown-menu-"]');
-  
-    // Remover event listeners existentes
-    dropdownButtons.forEach(button => {
-      button.removeEventListener('click', handleDropdownClick);
+document.addEventListener('DOMContentLoaded', () => {
+  const navbar = document.getElementById('navbar-default');
+  const toggleButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
+
+  if (toggleButton && navbar) {
+    toggleButton.addEventListener('click', () => {
+      navbar.classList.toggle('hidden');
     });
-  
-    // Agregar nuevos event listeners
-    dropdownButtons.forEach((button, index) => {
-      button.addEventListener('click', handleDropdownClick);
-    });
-  
-    // Manejar clics fuera de los dropdowns
-    document.removeEventListener('click', handleOutsideClick);
-    document.addEventListener('click', handleOutsideClick);
-  
-    // Inicializar el toggle del menú móvil
-    const mobileMenuToggle = document.querySelector('[data-collapse-toggle="navbar-default"]');
-    const navbar = document.getElementById('navbar-default');
-  
-    if (mobileMenuToggle && navbar) {
-      mobileMenuToggle.removeEventListener('click', toggleMobileMenu);
-      mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+  }
+
+  // Cerrar el menú móvil cuando se hace clic en un enlace
+  const navLinks = navbar.querySelectorAll('a');
+  navLinks.forEach(link => link.addEventListener('click', () => {
+    if (window.innerWidth < 768) {
+      navbar.classList.add('hidden');
     }
-  }
-  
-  function handleDropdownClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const button = e.currentTarget;
-    const index = button.id.split('-').pop();
-    const menu = document.getElementById(`dropdown-menu-${index}`);
-    
-    // Cerrar todos los otros dropdowns
-    document.querySelectorAll('[id^="dropdown-menu-"]').forEach((otherMenu) => {
-      if (otherMenu.id !== `dropdown-menu-${index}`) {
-        otherMenu.classList.add('hidden');
-      }
-    });
-  
-    // Alternar la visibilidad del dropdown actual
-    menu.classList.toggle('hidden');
-  }
-  
-  function handleOutsideClick(e) {
-    if (!e.target.closest('[id^="dropdown-button-"]')) {
-      document.querySelectorAll('[id^="dropdown-menu-"]').forEach(menu => {
-        menu.classList.add('hidden');
-      });
-    }
-  }
-  
-  function toggleMobileMenu() {
-    const navbar = document.getElementById('navbar-default');
-    navbar.classList.toggle('hidden');
-  }
-  
-  // Inicializar al cargar la página
-  document.addEventListener('DOMContentLoaded', initializeNavbar);
-  
-  // Reinicializar cuando cambie el contenido de la página (para SPAs)
-  document.addEventListener('astro:after-swap', initializeNavbar);
-  
-  // Fallback para otros frameworks o vanilla JS
-  if (window.MutationObserver) {
-    const observer = new MutationObserver((mutations) => {
-      if (mutations.some(mutation => mutation.addedNodes.length || mutation.removedNodes.length)) {
-        initializeNavbar();
-      }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-  </script>
+  }));
+});
+</script>
