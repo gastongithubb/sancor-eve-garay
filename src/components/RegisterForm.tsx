@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { registerUser } from './lib/db/db-users'; // Asegúrate de que esta importación sea correcta
+import { registerUser, verifyUser } from './lib/db/db-users'; // Asegúrate de que esta importación sea correcta
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,16 +8,30 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     try {
       const user = await registerUser(email, password, name);
       if (user) {
         console.log('Usuario registrado:', user);
-        // Aquí puedes redirigir al usuario o actualizar el estado de la aplicación
+        // Limpiar el formulario
+        setEmail('');
+        setPassword('');
+        setName('');
+        setSuccess('Usuario registrado exitosamente');
+        // Iniciar sesión automáticamente
+        const loggedInUser = await verifyUser(email, password);
+        if (loggedInUser) {
+          console.log('Usuario logueado automáticamente:', loggedInUser);
+          // Aquí puedes redirigir al usuario o actualizar el estado de la aplicación
+        } else {
+          setError('Error al iniciar sesión automáticamente');
+        }
       } else {
         setError('Error al registrar el usuario');
       }
@@ -36,6 +50,11 @@ const RegisterForm = () => {
         {error && (
           <div className="p-2 text-sm text-red-500 bg-red-100 rounded">
             {error}
+          </div>
+        )}
+        {success && (
+          <div className="p-2 text-sm text-green-500 bg-green-100 rounded">
+            {success}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
