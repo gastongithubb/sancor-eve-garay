@@ -1,0 +1,10 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import LoginForm  from '../components/LoginForm'; // Asegúrate de que la ruta sea correcta
+import Container from '@/components/Container.astro';
+---
+<Layout title="Iniciar Sesion">
+    <Container>
+      <LoginForm client:load />
+    </Container>
+  </Layout>

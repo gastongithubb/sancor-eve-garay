@@ -1,82 +1,133 @@
 ---
 // Define your navigation links here
 const navLinks = [
-  { href: '/nps', label: 'NPS - Trimestral' },
+  { 
+    label: 'NPS',
+    dropdown: true,
+    items: [
+      { href: '/nps-trimestral', label: 'NPS - Trimestral' },
+      { href: '/nps-individual', label: 'NPS - Individual' },
+    ]
+  },
   { href: '/#casos', label: 'Casos derivar / cerrar' },
   { href: '/promotores', label: 'Promotores' },
   { href: '/balance-mensual', label: 'Balance Mensual' },
-  // { href: '/metricas', label: 'Metricas trimestrales' },
-  { href: '/nps-individual', label: 'NPS-Individual' },
+  { 
+    label: 'Herramientas',
+    dropdown: true,
+    items: [
+      { href: '/herramienta-1', label: 'Herramienta 1' },
+      { href: '/herramienta-2', label: 'Herramienta 2' },
+      { href: '/herramienta-3', label: 'Herramienta 3' },
+    ]
+  },
 ];
 
 import Container from "./Container.astro"
 ---
 
-<!-- CSS -->
-<style>
-  /* Ajuste para separar el contenido del navbar */
-  .main-content {
-    margin-top: 8rem; /* Ajusta este valor según necesites */
-  }
-
-  /* Ajustes adicionales para el navbar si es necesario */
-  .navbar-container {
-    padding-top: 2rem; /* Ajusta este valor según necesites */
-  }
-</style>
-
-<!-- HTML -->
 <header class="mt-20">
   <nav class="fixed top-0 left-0 z-50 w-full bg-white">
-    <Container class="navbar-container"> <!-- Agregamos una clase al Container -->
+    <Container class="pt-8">
       <div class="flex flex-wrap items-center justify-between py-3 mx-auto">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="/Logo.webp" class="w-44" alt="Logo" />
         </a>
-        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm rounded-lg md:hidden focus:outline-none focus:ring-2" aria-controls="navbar-default" aria-expanded="false">
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm rounded-lg text-zinc-500 md:hidden hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-200" aria-controls="navbar-default" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
           </svg>
         </button>
-        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul class="flex flex-col p-4 mt-4 font-medium border rounded-lg md:p-0 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
+        <div class="hidden w-full md:flex md:items-center md:w-auto" id="navbar-default">
+          <ul class="flex flex-col p-4 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:p-0 font-SpaceGrotesk">
             {navLinks.map(link => (
-              <li>
-                <a href={link.href} class="block px-3 py-2 text-black rounded md:bg-transparent md:p-0">{link.label}</a>
+              <li class="relative">
+                {link.dropdown ? (
+                  <div class="dropdown">
+                    <button class="flex items-center px-3 py-2 text-black roundek md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">
+                      {link.label}
+                      <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                      </svg>
+                    </button>
+                    <div class="absolute left-0 z-10 hidden w-48 mt-2 bg-white border rounded-md dropdown-menu shadow-card">
+                      {link.items.map(item => (
+                        <a href={item.href} class="block px-4 py-2 text-sm text-black">{item.label}</a>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <a href={link.href} class="block px-3 py-2 text-black rounded md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">{link.label}</a>
+                )}
               </li>
             ))}
           </ul>
+          <a href="/login" class="inline-flex items-center px-4 py-2 ml-4 font-medium text-white rounded-lg bg-lime hover:bg-black focus:ring-4 focus:outline-none focus:ring-zinc-300">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+            </svg>
+            Iniciar sesión
+          </a>
         </div>
       </div>
     </Container>
   </nav>
 </header>
 
-<main class="main-content">
-  <!-- Aquí va tu contenido principal -->
-</main>
-
-
 <script is:inline>
-document.addEventListener('DOMContentLoaded', () => {
-  const navbar = document.getElementById('navbar-default');
-
-  // Check if navbar exists before adding event listeners
-  if (navbar) {
-    const toggleButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
-    const navLinks = navbar.querySelectorAll('a');
-
-    if (toggleButton) {
-      toggleButton.addEventListener('click', () => navbar.classList.toggle('hidden'));
+  document.addEventListener('DOMContentLoaded', () => {
+    const navbar = document.getElementById('navbar-default');
+    if (navbar) {
+      const toggleButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
+      const dropdowns = document.querySelectorAll('.dropdown');
+  
+      if (toggleButton) {
+        toggleButton.addEventListener('click', () => {
+          navbar.classList.toggle('hidden');
+          navbar.classList.toggle('flex');
+        });
+      } else {
+        console.warn("Navbar toggle button not found. Toggle functionality might be affected.");
+      }
+  
+      dropdowns.forEach(dropdown => {
+        const toggle = dropdown.querySelector('button');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          // Cerrar todos los otros dropdowns
+          dropdowns.forEach(otherDropdown => {
+            if (otherDropdown !== dropdown) {
+              otherDropdown.querySelector('.dropdown-menu').classList.add('hidden');
+            }
+          });
+          // Alternar la visibilidad del dropdown actual
+          menu.classList.toggle('hidden');
+        });
+      });
+  
+      // Cerrar todos los dropdowns cuando se hace clic fuera de ellos
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dropdown')) {
+          dropdowns.forEach(dropdown => {
+            dropdown.querySelector('.dropdown-menu').classList.add('hidden');
+          });
+        }
+      });
+  
+      // Cerrar el menú móvil cuando se hace clic en un enlace
+      const navLinks = navbar.querySelectorAll('a');
+      navLinks.forEach(link => link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          navbar.classList.add('hidden');
+          navbar.classList.remove('flex');
+        }
+      }));
     } else {
-      console.warn("Navbar toggle button not found. Toggle functionality might be affected.");
+      console.warn("Navbar element with ID 'navbar-default' not found. Navigation functionality might be affected.");
     }
-
-    navLinks.forEach(link => link.addEventListener('click', () => navbar.classList.add('hidden')));
-  } else {
-    console.warn("Navbar element with ID 'navbar-default' not found. Navigation functionality might be affected.");
-  }
-});
-
-</script>
+  });
+  </script>

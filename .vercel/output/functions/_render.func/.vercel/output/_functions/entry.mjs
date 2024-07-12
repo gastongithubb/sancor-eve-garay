@@ -2419,23 +2419,25 @@ const createExports = (manifest, { middlewareSecret, skewProtection }) => {
 
 const _page0 = () => import('./pages/_image.astro.mjs');
 const _page1 = () => import('./pages/balance-mensual.astro.mjs');
-const _page2 = () => import('./pages/novedades.astro.mjs');
-const _page3 = () => import('./pages/nps.astro.mjs');
-const _page4 = () => import('./pages/nps-individual.astro.mjs');
-const _page5 = () => import('./pages/programacion.astro.mjs');
-const _page6 = () => import('./pages/promotores.astro.mjs');
-const _page7 = () => import('./pages/team.astro.mjs');
-const _page8 = () => import('./pages/index.astro.mjs');
+const _page2 = () => import('./pages/login.astro.mjs');
+const _page3 = () => import('./pages/novedades.astro.mjs');
+const _page4 = () => import('./pages/nps.astro.mjs');
+const _page5 = () => import('./pages/nps-individual.astro.mjs');
+const _page6 = () => import('./pages/programacion.astro.mjs');
+const _page7 = () => import('./pages/promotores.astro.mjs');
+const _page8 = () => import('./pages/team.astro.mjs');
+const _page9 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/balance-mensual.astro", _page1],
-    ["src/pages/novedades.astro", _page2],
-    ["src/pages/nps.astro", _page3],
-    ["src/pages/nps-individual.astro", _page4],
-    ["src/pages/programacion.astro", _page5],
-    ["src/pages/promotores.astro", _page6],
-    ["src/pages/team.astro", _page7],
-    ["src/pages/index.astro", _page8]
+    ["src/pages/login.astro", _page2],
+    ["src/pages/novedades.astro", _page3],
+    ["src/pages/nps.astro", _page4],
+    ["src/pages/nps-individual.astro", _page5],
+    ["src/pages/programacion.astro", _page6],
+    ["src/pages/promotores.astro", _page7],
+    ["src/pages/team.astro", _page8],
+    ["src/pages/index.astro", _page9]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -2444,7 +2446,7 @@ const _manifest = Object.assign(manifest, {
     middleware: onRequest
 });
 const _args = {
-    "middlewareSecret": "790cd8f2-ed9e-4624-b5ca-3da1a6ad9a6c",
+    "middlewareSecret": "b15ad6f1-f00a-49cf-ba8a-3a5e86c63ab3",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);
