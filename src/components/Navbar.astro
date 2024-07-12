@@ -76,58 +76,79 @@ import Container from "./Container.astro"
 </header>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initializeNavbar() {
+    const dropdownButtons = document.querySelectorAll('[id^="dropdown-button-"]');
+    const dropdownMenus = document.querySelectorAll('[id^="dropdown-menu-"]');
+  
+    // Remover event listeners existentes
+    dropdownButtons.forEach(button => {
+      button.removeEventListener('click', handleDropdownClick);
+    });
+  
+    // Agregar nuevos event listeners
+    dropdownButtons.forEach((button, index) => {
+      button.addEventListener('click', handleDropdownClick);
+    });
+  
+    // Manejar clics fuera de los dropdowns
+    document.removeEventListener('click', handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick);
+  
+    // Inicializar el toggle del menú móvil
+    const mobileMenuToggle = document.querySelector('[data-collapse-toggle="navbar-default"]');
     const navbar = document.getElementById('navbar-default');
-    if (navbar) {
-      const toggleButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
-      const dropdowns = document.querySelectorAll('.dropdown');
   
-      if (toggleButton) {
-        toggleButton.addEventListener('click', () => {
-          navbar.classList.toggle('hidden');
-          navbar.classList.toggle('flex');
-        });
-      } else {
-        console.warn("Navbar toggle button not found. Toggle functionality might be affected.");
-      }
-  
-      dropdowns.forEach(dropdown => {
-        const toggle = dropdown.querySelector('button');
-        const menu = dropdown.querySelector('.dropdown-menu');
-        
-        toggle.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          // Cerrar todos los otros dropdowns
-          dropdowns.forEach(otherDropdown => {
-            if (otherDropdown !== dropdown) {
-              otherDropdown.querySelector('.dropdown-menu').classList.add('hidden');
-            }
-          });
-          // Alternar la visibilidad del dropdown actual
-          menu.classList.toggle('hidden');
-        });
-      });
-  
-      // Cerrar todos los dropdowns cuando se hace clic fuera de ellos
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.dropdown')) {
-          dropdowns.forEach(dropdown => {
-            dropdown.querySelector('.dropdown-menu').classList.add('hidden');
-          });
-        }
-      });
-  
-      // Cerrar el menú móvil cuando se hace clic en un enlace
-      const navLinks = navbar.querySelectorAll('a');
-      navLinks.forEach(link => link.addEventListener('click', () => {
-        if (window.innerWidth < 768) {
-          navbar.classList.add('hidden');
-          navbar.classList.remove('flex');
-        }
-      }));
-    } else {
-      console.warn("Navbar element with ID 'navbar-default' not found. Navigation functionality might be affected.");
+    if (mobileMenuToggle && navbar) {
+      mobileMenuToggle.removeEventListener('click', toggleMobileMenu);
+      mobileMenuToggle.addEventListener('click', toggleMobileMenu);
     }
-  });
+  }
+  
+  function handleDropdownClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const button = e.currentTarget;
+    const index = button.id.split('-').pop();
+    const menu = document.getElementById(`dropdown-menu-${index}`);
+    
+    // Cerrar todos los otros dropdowns
+    document.querySelectorAll('[id^="dropdown-menu-"]').forEach((otherMenu) => {
+      if (otherMenu.id !== `dropdown-menu-${index}`) {
+        otherMenu.classList.add('hidden');
+      }
+    });
+  
+    // Alternar la visibilidad del dropdown actual
+    menu.classList.toggle('hidden');
+  }
+  
+  function handleOutsideClick(e) {
+    if (!e.target.closest('[id^="dropdown-button-"]')) {
+      document.querySelectorAll('[id^="dropdown-menu-"]').forEach(menu => {
+        menu.classList.add('hidden');
+      });
+    }
+  }
+  
+  function toggleMobileMenu() {
+    const navbar = document.getElementById('navbar-default');
+    navbar.classList.toggle('hidden');
+  }
+  
+  // Inicializar al cargar la página
+  document.addEventListener('DOMContentLoaded', initializeNavbar);
+  
+  // Reinicializar cuando cambie el contenido de la página (para SPAs)
+  document.addEventListener('astro:after-swap', initializeNavbar);
+  
+  // Fallback para otros frameworks o vanilla JS
+  if (window.MutationObserver) {
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.some(mutation => mutation.addedNodes.length || mutation.removedNodes.length)) {
+        initializeNavbar();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
   </script>
