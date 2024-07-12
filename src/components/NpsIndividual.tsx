@@ -62,7 +62,7 @@ const NpsIndividual: React.FC = () => {
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando programacion semanal.</p>
+      <p className="mt-4 text-lg font-semibold text-gray-700">Cargando NPS.</p>
     </div>
   );
   if (error) return (

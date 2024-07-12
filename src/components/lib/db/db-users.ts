@@ -65,10 +65,27 @@ export type UserRow = typeof users.$inferSelect;
 export type NovedadesRow = typeof novedades.$inferSelect;
 export type AuthUser = typeof authUsers.$inferSelect;
 
-export async function initDatabase() {
+async function createTestUser() {
+  const testUser = {
+    id: uuidv4(),
+    email: 'test@example.com',
+    password: 'password123',
+    name: 'Usuario de Prueba'
+  };
+
+  try {
+    await db.insert(authUsers).values(testUser).run();
+    console.log('Usuario de prueba creado con éxito');
+  } catch (error) {
+    console.error('Error al crear usuario de prueba:', error);
+  }
+}
+
+async function createTablesIfNotExist() {
   try {
     console.log('Iniciando la creación de tablas...');
 
+    // Crear tabla auth_users si no existe
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS auth_users (
         id TEXT PRIMARY KEY,
@@ -79,6 +96,7 @@ export async function initDatabase() {
     `);
     console.log('Tabla auth_users creada o ya existente');
 
+    // Crear tabla employees si no existe
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS employees (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -94,6 +112,7 @@ export async function initDatabase() {
     `);
     console.log('Tabla employees creada o ya existente');
 
+    // Crear tabla break_schedules si no existe
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS break_schedules (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -108,6 +127,7 @@ export async function initDatabase() {
     `);
     console.log('Tabla break_schedules creada o ya existente');
 
+    // Crear tabla users si no existe
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -120,6 +140,7 @@ export async function initDatabase() {
     `);
     console.log('Tabla users creada o ya existente');
 
+    // Crear tabla novedades si no existe
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS novedades (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -137,6 +158,11 @@ export async function initDatabase() {
       .then(result => result[0]?.count ?? 0);
 
     console.log(`Número de usuarios en auth_users: ${userCount}`);
+
+    if (userCount === 0) {
+      console.log('No hay usuarios. Creando usuario de prueba...');
+      await createTestUser();
+    }
 
   } catch (error) {
     console.error('Error al inicializar la base de datos:', error);
@@ -270,14 +296,11 @@ export async function registerUser(email: string, password: string, name: string
   try {
     console.log(`Intentando registrar usuario: ${email}`);
     const id = uuidv4();
-    console.log(`ID generado: ${id}`);
 
     const result = await db.insert(authUsers)
       .values({ id, email, password, name })
       .returning()
       .all();
-
-    console.log('Resultado de la inserción:', result);
 
     if (result.length > 0) {
       console.log('Usuario registrado exitosamente');
@@ -325,3 +348,6 @@ export async function getUserById(id: string): Promise<AuthUser | null> {
     return null;
   }
 }
+
+// Llamamos a la función para crear las tablas si no existen al inicio
+createTablesIfNotExist();

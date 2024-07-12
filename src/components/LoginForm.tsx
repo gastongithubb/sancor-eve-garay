@@ -7,7 +7,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
@@ -24,7 +24,7 @@ const LoginForm = () => {
 
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = data.redirectUrl;
+        window.location.href = data.redirectUrl; // Redirigir a la página principal
       } else {
         setError(data.message);
       }

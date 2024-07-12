@@ -45,6 +45,14 @@ import Container from "./Container.astro"
                 whatsappPopup.classList.add('hidden');
             }, 5000);
         }
+        
+        // Mostrar botón de scroll cuando se hace scroll hacia abajo
+        const scrollTopButton = document.getElementById('scroll-top-button');
+        if (window.scrollY > 300) {
+            scrollTopButton.classList.remove('hidden');
+        } else {
+            scrollTopButton.classList.add('hidden');
+        }
     });
 
     // Cierra el popup al hacer clic en cualquier parte
@@ -53,6 +61,14 @@ import Container from "./Container.astro"
             whatsappPopup.classList.add('hidden');
         }
     });
+
+    // Función para hacer scroll hacia arriba
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 </script>
 
 <style>
@@ -66,4 +82,34 @@ import Container from "./Container.astro"
         opacity: 1;
         transform: translateY(0);
     }
+
+    #scroll-top-button {
+        position: fixed;
+        bottom: 4rem;
+        right: 4rem;
+        z-index: 50;
+        background-color: #6F88CD;
+        color: #fff;
+        border: none;
+        padding: 0.5rem;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #scroll-top-button.hidden {
+        display: none;
+    }
+
+    #scroll-top-button:hover {
+        background-color: #4b5e91;
+    }
 </style>
+
+<button id="scroll-top-button" class="hidden" aria-label="Scroll to top" onclick="scrollToTop()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2a10 10 0 0 0-7.072 17.07l1.414-1.414A8 8 0 0 1 12 4a8 8 0 0 1 7.07 11.456l1.413 1.414A10 10 0 0 0 12 2z"/>
+        <path d="M11 15.5V7h2v8.5a.5.5 0 0 1-1 0z"/>
+    </svg>
+</button>
