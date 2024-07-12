@@ -1,6 +1,6 @@
 {
 	"runtime": "nodejs20.x",
-	"handler": ".vercel/output/_functions/entry.mjs",
+	"handler": "home/user/sancor-eve-garay/.vercel/output/_functions/entry.mjs",
 	"launcherType": "Nodejs",
 	"supportsResponseStreaming": true
 }
