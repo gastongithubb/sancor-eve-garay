@@ -7,12 +7,12 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError('');
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://sancor-eve-garay.vercel.app/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -20,18 +20,20 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message);
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        // Guardar información del usuario en localStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        // Redirigir a la página principal
-        window.location.href = data.redirectUrl;
-      } else {
-        // Mostrar mensaje de error
-        setError(data.message);
-      }
+      // Guardar información del usuario en localStorage
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      // Redirigir a la página principal
+      window.location.href = data.redirectUrl;
+
     } catch (error) {
       console.error('Error durante el inicio de sesión:', error);
       setError('Ocurrió un error durante el inicio de sesión');
@@ -50,7 +52,7 @@ const LoginForm = () => {
             {error}
           </div>
         )}
-        <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6" id="login-form">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
               Correo electrónico
