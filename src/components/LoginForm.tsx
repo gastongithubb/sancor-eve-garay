@@ -109,7 +109,7 @@ const LoginForm = () => {
         </form>
         <p className="text-xs text-center text-zinc-400 sm:text-sm">
           ¿No tienes una cuenta?{' '}
-          <a href="/register" className="font-medium text-lime hover:text-white">
+          <a href="/login" className="font-medium text-lime hover:text-white">
             Registrarse
           </a>
         </p>

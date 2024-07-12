@@ -1,5 +1,7 @@
 ---
-// Define your navigation links here
+import Container from "./Container.astro"
+
+// Definir tus enlaces de navegación aquí
 const navLinks = [
   { 
     label: 'NPS',
@@ -7,7 +9,7 @@ const navLinks = [
     items: [
       { href: '/nps-trimestral', label: 'NPS - Trimestral' },
       { href: '/nps-individual', label: 'NPS - Individual' },
-       { href: '/balance-mensual', label: 'Balance Mensual' },
+      { href: '/balance-mensual', label: 'Balance Mensual' },
     ]
   },
   { href: '/#casos', label: 'Casos derivar / cerrar' },
@@ -24,8 +26,6 @@ const navLinks = [
   },
 ];
 
-import Container from "./Container.astro"
-
 // Obtener la información del usuario desde las cookies o localStorage
 const userJson = Astro.cookies.get('user')?.value || (typeof localStorage !== 'undefined' ? localStorage.getItem('user') : null);
 const user = userJson ? JSON.parse(userJson) : null;
@@ -35,12 +35,18 @@ const navbarHeight = "64px";
 ---
 
 <style define:vars={{ navbarHeight }}>
+  /* Estilos específicos de tu navbar */
   .navbar {
     transition: background-color 0.3s ease;
     height: var(--navbarHeight);
   }
   .navbar-scrolled {
     background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .navbar-scrolled-blur {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); /* Ajusta el valor de blur según lo deseado */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   .navbar-spacer {
@@ -73,19 +79,12 @@ const navbarHeight = "64px";
     right: 0;
     height: 0.5rem;
   }
-
-  .navbar-scrolled-blur {
-  backdrop-filter: blur(10px); /* Ajusta el valor de blur según lo deseado */
-  background-color: rgba(255, 255, 255, 0.95); /* Fondo con transparencia */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 </style>
 
 <header class="fixed top-0 left-0 z-50 w-full">
-  <nav class="navbar">
+  <nav id="landing-header" class="navbar">
     <Container class="h-full py-4">
-      <div class="flex flex-wrap items-center justify-between mx-auto">
+      <div class="flex items-center justify-between mx-auto">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="/Logo.webp" class="w-36" alt="Logo" />
         </a>
@@ -132,9 +131,9 @@ const navbarHeight = "64px";
                 </svg>
                 Iniciar sesión
               </a>
-              <a href="/register" class="inline-flex items-center px-4 py-2 font-medium transition-colors duration-200 border rounded-lg text-lime border-lime hover:bg-lime hover:text-white focus:ring-4 focus:outline-none focus:ring-zinc-300">
+              {/* <a href="/register" class="inline-flex items-center px-4 py-2 font-medium transition-colors duration-200 border rounded-lg text-lime border-lime hover:bg-lime hover:text-white focus:ring-4 focus:outline-none focus:ring-zinc-300">
                 Registrarse
-              </a>
+              </a> */}
             </div>
           )}
         </div>
@@ -144,37 +143,50 @@ const navbarHeight = "64px";
 </header>
 <div class="navbar-spacer"></div>
 
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const navbar = document.querySelector('.navbar');
-  const navbarDefault = document.getElementById('navbar-default');
-  const toggleButton = document.querySelector('[data-collapse-toggle="navbar-default"]');
+  const listItem = document.querySelectorAll("#landing-header li")
+  const menuBackDrop = document.querySelector("#menu-backdrop") as HTMLElement
 
-  if (toggleButton && navbarDefault) {
-    toggleButton.addEventListener('click', () => {
-      navbarDefault.classList.toggle('hidden');
-    });
+  listItem.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const { left, top, width, height } = item.getBoundingClientRect()
+
+      menuBackDrop.style.setProperty("--left", `${left}px`)
+      menuBackDrop.style.setProperty("--top", `${top}px`)
+      menuBackDrop.style.setProperty("--width", `${width}px`)
+      menuBackDrop.style.setProperty("--height", `${height}px`)
+
+      menuBackDrop.style.opacity = "1"
+      menuBackDrop.style.visibility = "visible"
+    })
+
+    item.addEventListener("mouseleave", () => {
+      menuBackDrop.style.opacity = "0"
+      menuBackDrop.style.visibility = "hidden"
+    })
+  })
+</script>
+
+<script>
+  const headerEl = document.querySelector("#landing-header") as HTMLElement
+
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.9,
   }
 
-  // Cerrar el menú móvil cuando se hace clic en un enlace
-  if (navbarDefault) {
-    const navLinks = navbarDefault.querySelectorAll('a');
-    navLinks.forEach(link => link.addEventListener('click', () => {
-      if (window.innerWidth < 768) {
-        navbarDefault.classList.add('hidden');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const { isIntersecting } = entry
+      if (isIntersecting) {
+        const color = entry.target.getAttribute("data-header-color") || "defaultColor";
+          headerEl.style.color = color;
       }
-    }));
-  }
+    })
+  }, observerOptions)
 
-  // Cambiar el estilo de la navbar al hacer scroll
-  if (navbar) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add('navbar-scrolled', 'navbar-scrolled-blur');
-    } else {
-      navbar.classList.remove('navbar-scrolled', 'navbar-scrolled-blur');
-    }
-  });
-}
-})
+  const sectionElements = document.querySelectorAll(".landing-section")
+  sectionElements.forEach((section) => observer.observe(section))
 </script>

@@ -25,6 +25,9 @@ export default {
 		  800: "#292A32",
 		  900: "#191A23",
 		},
+		green: "#c6f0ce",
+		yellow: "#ffea9c",
+		red: "#ffc6ce"
 	  },
 	  boxShadow:{
         'card':'0px 5px 0px 0px #191A23'
