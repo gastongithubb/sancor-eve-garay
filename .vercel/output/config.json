@@ -1,19 +1,30 @@
 {
 	"version": 3,
 	"routes": [
-		{
-			"src": "^/_astro/(.*)$",
-			"headers": {
-				"cache-control": "public, max-age=31536000, immutable"
-			},
-			"continue": true
+	  {
+		"src": "^/_astro/(.*)$",
+		"headers": {
+		  "cache-control": "public, max-age=31536000, immutable"
 		},
-		{
-			"handle": "filesystem"
-		},
-		{
-			"src": "^\\/_image$",
-			"dest": "_render"
-		}
+		"continue": true
+	  },
+	  {
+		"handle": "filesystem"
+	  },
+	  {
+		"src": "^\\/_image$",
+		"dest": "_render"
+	  },
+	  {
+		"src": "/api/login",
+		"dest": "api/login.ts",
+		"methods": ["POST"]
+	  },
+	  {
+		"src": "/api/register",
+		"dest": "api/register.ts",
+		"methods": ["POST"]
+	  }
 	]
-}
+  }
+  
