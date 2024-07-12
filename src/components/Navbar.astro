@@ -26,8 +26,34 @@ const navLinks = [
 import Container from "./Container.astro"
 ---
 
+<style>
+  .dropdown-container {
+    position: relative;
+  }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 10;
+    min-width: 200px;
+    padding-top: 0.5rem;
+  }
+  .dropdown-container:hover .dropdown-menu {
+    display: block;
+  }
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -0.5rem;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+  }
+</style>
+
 <header class="mt-20">
-  <nav class="fixed top-0 left-0 z-50 w-full bg-white shadow-card">
+  <nav class="fixed top-0 left-0 z-50 w-full bg-white">
     <Container class="pt-8">
       <div class="flex flex-wrap items-center justify-between py-3 mx-auto">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -42,7 +68,7 @@ import Container from "./Container.astro"
         <div class="hidden w-full md:flex md:items-center md:w-auto" id="navbar-default">
           <ul class="flex flex-col p-4 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:p-0 font-SpaceGrotesk">
             {navLinks.map(link => (
-              <li class="relative group">
+              <li class="relative dropdown-container">
                 {link.dropdown ? (
                   <div>
                     <a href="#" class="flex items-center px-3 py-2 text-black rounded md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">
@@ -51,14 +77,14 @@ import Container from "./Container.astro"
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                       </svg>
                     </a>
-                    <div class="absolute left-0 hidden mt-2 space-y-2 bg-white border rounded-md border-zinc-200 shadow-card group-hover:block">
+                    <div class="bg-white border rounded-md dropdown-menu border-zinc-200">
                       {link.items.map(item => (
-                        <a href={item.href} class="block px-4 py-2 text-sm text-black hover:bg-zinc-100">{item.label}</a>
+                        <a href={item.href} class="block px-4 py-2 text-sm text-black">{item.label}</a>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <a href={link.href} class="block px-3 py-2 text-black rounded hover:bg-zinc-100 md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">{link.label}</a>
+                  <a href={link.href} class="block px-3 py-2 text-black rounded md:hover:bg-transparent md:border-0 md:hover:text-lime md:p-0">{link.label}</a>
                 )}
               </li>
             ))}
