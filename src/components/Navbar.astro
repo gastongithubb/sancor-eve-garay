@@ -73,6 +73,13 @@ const navbarHeight = "64px";
     right: 0;
     height: 0.5rem;
   }
+
+  .navbar-scrolled-blur {
+  backdrop-filter: blur(10px); /* Ajusta el valor de blur según lo deseado */
+  background-color: rgba(255, 255, 255, 0.95); /* Fondo con transparencia */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 </style>
 
 <header class="fixed top-0 left-0 z-50 w-full">
@@ -161,13 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cambiar el estilo de la navbar al hacer scroll
   if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('navbar-scrolled');
-      } else {
-        navbar.classList.remove('navbar-scrolled');
-      }
-    });
-  }
-});
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('navbar-scrolled', 'navbar-scrolled-blur');
+    } else {
+      navbar.classList.remove('navbar-scrolled', 'navbar-scrolled-blur');
+    }
+  });
+}
+})
 </script>
