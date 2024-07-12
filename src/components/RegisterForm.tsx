@@ -16,7 +16,9 @@ const RegisterForm = () => {
     setSuccess('');
 
     try {
+      console.log('Registrando usuario:', { email, password, name });
       const user = await registerUser(email, password, name);
+      console.log('Respuesta de registerUser:', user);
       if (user) {
         console.log('Usuario registrado:', user);
         // Limpiar el formulario
@@ -26,6 +28,7 @@ const RegisterForm = () => {
         setSuccess('Usuario registrado exitosamente');
         // Iniciar sesión automáticamente
         const loggedInUser = await verifyUser(email, password);
+        console.log('Respuesta de verifyUser:', loggedInUser);
         if (loggedInUser) {
           console.log('Usuario logueado automáticamente:', loggedInUser);
           // Aquí puedes redirigir al usuario o actualizar el estado de la aplicación
@@ -36,6 +39,7 @@ const RegisterForm = () => {
         setError('Error al registrar el usuario');
       }
     } catch (error) {
+      console.error('Error al registrar:', error);
       setError('Error al registrar. Por favor, intenta de nuevo.');
     }
   };

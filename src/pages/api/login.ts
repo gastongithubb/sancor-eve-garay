@@ -10,7 +10,7 @@ export const post: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ 
       message: 'Inicio de sesión exitoso', 
       user,
-      redirectUrl: '/' // URL de la página principal
+      redirectUrl: '/' // Asegúrate de que esta URL sea correcta
     }), {
       status: 200,
       headers: {

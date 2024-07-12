@@ -7,8 +7,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError('');
 
     try {
@@ -23,9 +23,13 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok) {
+        // Guardar información del usuario en localStorage
         localStorage.setItem('user', JSON.stringify(data.user));
-        window.location.href = data.redirectUrl; // Redirigir a la página principal
+        
+        // Redirigir a la página principal
+        window.location.href = data.redirectUrl;
       } else {
+        // Mostrar mensaje de error
         setError(data.message);
       }
     } catch (error) {
@@ -46,7 +50,7 @@ const LoginForm = () => {
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6" id="login-form">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
               Correo electrónico
