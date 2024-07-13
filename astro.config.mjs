@@ -1,16 +1,11 @@
 import { defineConfig } from 'astro/config';
-import { defineConfig } from 'vite';
-
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
-  output: 'hybrid',
+  output: 'server',
   integrations: [react(), tailwind(), vercel()],
-  plugins: [
-    '@astro/metadata'
-  ],
   vite: {
     define: {
       'process.env.VITE_PUBLIC_TURSO_CONNECTION_URL': JSON.stringify(process.env.VITE_PUBLIC_TURSO_CONNECTION_URL),

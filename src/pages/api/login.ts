@@ -40,7 +40,10 @@ export const post: APIRoute = async ({ request }) => {
   } catch (error) {
     console.error('Error en el inicio de sesión:', error);
 
-    return new Response(JSON.stringify({ message: 'Error interno del servidor' }), {
+    return new Response(JSON.stringify({ 
+      message: 'Error interno del servidor',
+      error: error instanceof Error ? error.message : String(error)
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

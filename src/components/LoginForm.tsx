@@ -7,11 +7,13 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [debugInfo, setDebugInfo] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+    setDebugInfo('');
 
     try {
       const response = await fetch('/api/login', {
@@ -22,7 +24,16 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      setDebugInfo(`Status: ${response.status}\nResponse:\n${responseText}`);
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        setError('La respuesta del servidor no es JSON válido');
+        return;
+      }
 
       if (!response.ok) {
         setError(data.message || 'Ocurrió un error durante el inicio de sesión');
@@ -117,6 +128,12 @@ const LoginForm = () => {
             Registrarse
           </a>
         </p>
+        {debugInfo && (
+          <div className="p-2 mt-4 rounded bg-zinc-700">
+            <h3 className="font-bold text-white">Debug Info:</h3>
+            <pre className="text-xs whitespace-pre-wrap text-zinc-300">{debugInfo}</pre>
+          </div>
+        )}
       </div>
     </div>
   );
