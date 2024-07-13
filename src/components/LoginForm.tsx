@@ -6,13 +6,15 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
-      const response = await fetch('https://sancor-eve-garay.vercel.app/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -20,13 +22,12 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        setError(data.message);
+        setError(data.message || 'Ocurrió un error durante el inicio de sesión');
         return;
       }
-
-      const data = await response.json();
 
       // Guardar información del usuario en localStorage
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -37,6 +38,8 @@ const LoginForm = () => {
     } catch (error) {
       console.error('Error durante el inicio de sesión:', error);
       setError('Ocurrió un error durante el inicio de sesión');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -101,15 +104,16 @@ const LoginForm = () => {
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-lime hover:bg-white hover:text-lime focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime"
+              disabled={isLoading}
+              className="w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-lime hover:bg-white hover:text-lime focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Iniciar sesión
+              {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
           </div>
         </form>
         <p className="text-xs text-center text-zinc-400 sm:text-sm">
           ¿No tienes una cuenta?{' '}
-          <a href="/login" className="font-medium text-lime hover:text-white">
+          <a href="/registro" className="font-medium text-lime hover:text-white">
             Registrarse
           </a>
         </p>
