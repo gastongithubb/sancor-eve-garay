@@ -1,9 +1,8 @@
-/// <reference types="astro/client" />
-
+// env.d.ts
 interface ImportMetaEnv {
-  readonly PUBLIC_TURSO_CONNECTION_URL: string;
-  readonly PUBLIC_TURSO_AUTH_TOKEN: string;
-  // Añade aquí otras variables de entorno que uses
+  readonly VITE_PUBLIC_TURSO_DATABASE_URL: string;
+  readonly VITE_PUBLIC_TURSO_AUTH_TOKEN: string;
+  // Agrega aquí otras variables de entorno que uses
 }
 
 interface ImportMeta {

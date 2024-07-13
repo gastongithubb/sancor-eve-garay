@@ -1,0 +1,44 @@
+---
+import { google } from 'googleapis';
+import { response, type Request, type Response } from 'express';
+
+const oauth2Client = new google.auth.OAuth2(
+  import.meta.env.GOOGLE_CLIENT_ID,
+  import.meta.env.GOOGLE_CLIENT_SECRET,
+  `http://localhost:${import.meta.env.PORT}/auth/google/callback`
+);
+
+export async function handleRequest({ request, resolve }: { request: Request, resolve: (response: Response) => void }) {
+  const url = new URL(request.url);
+  const code = url.searchParams.get('code');
+
+  if (!code) {
+    resolve({
+      status: (code: number) => ({
+        status: code,
+        send: () => `No se proporcionó código de autorización.`,
+      }),
+    });
+    return;
+  }
+
+  try {
+    const { tokens } = await oauth2Client.getToken(code as string);
+    // Manejar tokens y lógica de inicio de sesión aquí
+    resolve({
+      status: (code: number) => ({
+        status: code,
+        send: () => 'Inicio de sesión exitoso con Google.',
+      }),
+    });
+  } catch (error) {
+    console.error('Error al obtener tokens de acceso:', error);
+    resolve({
+      status: (code: number) => ({
+        status: code,
+        send: () => 'Error al iniciar sesión con Google.',
+      }),
+    });
+  }
+}
+---

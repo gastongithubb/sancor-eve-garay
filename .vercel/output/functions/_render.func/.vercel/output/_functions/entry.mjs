@@ -1,7 +1,7 @@
 import { renderers } from './renderers.mjs';
-import { l as levels, g as getEventPrefix, L as Logger, A as AstroIntegrationLogger, m as manifest } from './chunks/_@astrojs-manifest_DGII7FaM.mjs';
+import { l as levels, g as getEventPrefix, L as Logger, A as AstroIntegrationLogger, m as manifest } from './chunks/_@astrojs-manifest_CrFz2ZLH.mjs';
 import { A as AstroError, i as i18nNoLocaleFoundInPath, f as appendForwardSlash, j as joinPaths, R as ResponseSentError, g as MiddlewareNoDataOrNextCalled, h as MiddlewareNotAResponse, G as GetStaticPathsRequired, k as InvalidGetStaticPathsReturn, l as InvalidGetStaticPathsEntry, m as GetStaticPathsExpectedParams, n as GetStaticPathsInvalidRouteParam, t as trimSlashes, P as PageNumberParamNotFound, o as NoMatchingStaticPathFound, p as PrerenderDynamicEndpointPathCollide, q as ReservedSlotName, L as LocalsNotAnObject, r as PrerenderClientAddressNotAvailable, C as ClientAddressNotAvailable, S as StaticClientAddressNotAvailable, s as RewriteWithBodyUsed, u as AstroResponseHeadersReassigned, v as fileExtension, w as slash, x as prependForwardSlash, y as removeTrailingForwardSlash } from './chunks/astro/assets-service_BAQtqXdI.mjs';
-import { R as ROUTE_TYPE_HEADER, a as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, r as renderSlotToString, b as renderJSX, c as chunkToString, i as isRenderInstruction, d as clientLocalsSymbol, e as clientAddressSymbol$1, f as renderPage, g as renderEndpoint, A as ASTRO_VERSION, h as responseSentSymbol$1, j as REROUTABLE_STATUS_CODES } from './chunks/astro/server_8Q9s6_jR.mjs';
+import { R as ROUTE_TYPE_HEADER, a as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, r as renderSlotToString, b as renderJSX, c as chunkToString, i as isRenderInstruction, d as clientLocalsSymbol, e as clientAddressSymbol$1, f as renderPage, g as renderEndpoint, A as ASTRO_VERSION, h as responseSentSymbol$1, j as REROUTABLE_STATUS_CODES } from './chunks/astro/server_BSn7jCTA.mjs';
 import { serialize, parse } from 'cookie';
 import 'html-escaper';
 import 'clsx';
@@ -2418,38 +2418,36 @@ const createExports = (manifest, { middlewareSecret, skewProtection }) => {
 };
 
 const _page0 = () => import('./pages/_image.astro.mjs');
-const _page1 = () => import('./pages/api/login.astro.mjs');
-const _page2 = () => import('./pages/api/register.astro.mjs');
-const _page3 = () => import('./pages/api/test.astro.mjs');
-const _page4 = () => import('./pages/balance-mensual.astro.mjs');
-const _page5 = () => import('./pages/foro.astro.mjs');
-const _page6 = () => import('./pages/login.astro.mjs');
-const _page7 = () => import('./pages/notfound.astro.mjs');
-const _page8 = () => import('./pages/novedades.astro.mjs');
-const _page9 = () => import('./pages/nps-individual.astro.mjs');
-const _page10 = () => import('./pages/nps-trimestral.astro.mjs');
-const _page11 = () => import('./pages/programacion.astro.mjs');
-const _page12 = () => import('./pages/promotores.astro.mjs');
-const _page13 = () => import('./pages/register.astro.mjs');
-const _page14 = () => import('./pages/team.astro.mjs');
-const _page15 = () => import('./pages/index.astro.mjs');
+const _page1 = () => import('./pages/auth/google.astro.mjs');
+const _page2 = () => import('./pages/auth/google-callback.astro.mjs');
+const _page3 = () => import('./pages/balance-mensual.astro.mjs');
+const _page4 = () => import('./pages/foro.astro.mjs');
+const _page5 = () => import('./pages/login.astro.mjs');
+const _page6 = () => import('./pages/notfound.astro.mjs');
+const _page7 = () => import('./pages/novedades.astro.mjs');
+const _page8 = () => import('./pages/nps-individual.astro.mjs');
+const _page9 = () => import('./pages/nps-trimestral.astro.mjs');
+const _page10 = () => import('./pages/programacion.astro.mjs');
+const _page11 = () => import('./pages/promotores.astro.mjs');
+const _page12 = () => import('./pages/register.astro.mjs');
+const _page13 = () => import('./pages/team.astro.mjs');
+const _page14 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
-    ["src/pages/api/login.ts", _page1],
-    ["src/pages/api/register.ts", _page2],
-    ["src/pages/api/test.ts", _page3],
-    ["src/pages/balance-mensual.astro", _page4],
-    ["src/pages/foro.astro", _page5],
-    ["src/pages/login.astro", _page6],
-    ["src/pages/notfound.astro", _page7],
-    ["src/pages/novedades.astro", _page8],
-    ["src/pages/nps-individual.astro", _page9],
-    ["src/pages/nps-trimestral.astro", _page10],
-    ["src/pages/programacion.astro", _page11],
-    ["src/pages/promotores.astro", _page12],
-    ["src/pages/register.astro", _page13],
-    ["src/pages/team.astro", _page14],
-    ["src/pages/index.astro", _page15]
+    ["src/pages/auth/google.astro", _page1],
+    ["src/pages/auth/google-callback.astro", _page2],
+    ["src/pages/balance-mensual.astro", _page3],
+    ["src/pages/foro.astro", _page4],
+    ["src/pages/login.astro", _page5],
+    ["src/pages/notfound.astro", _page6],
+    ["src/pages/novedades.astro", _page7],
+    ["src/pages/nps-individual.astro", _page8],
+    ["src/pages/nps-trimestral.astro", _page9],
+    ["src/pages/programacion.astro", _page10],
+    ["src/pages/promotores.astro", _page11],
+    ["src/pages/register.astro", _page12],
+    ["src/pages/team.astro", _page13],
+    ["src/pages/index.astro", _page14]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -2458,7 +2456,7 @@ const _manifest = Object.assign(manifest, {
     middleware: onRequest
 });
 const _args = {
-    "middlewareSecret": "785bbe70-7dbb-4abe-86fc-52bee8d89a34",
+    "middlewareSecret": "8e10bfd3-23c6-4ca7-a608-bc0e764a1c6e",
     "skewProtection": false
 };
 const _exports = createExports(_manifest, _args);

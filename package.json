@@ -21,8 +21,11 @@
     "@types/uuid": "^10.0.0",
     "astro": "^4.11.5",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.4",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "google-auth-library": "^9.11.0",
+    "googleapis": "^140.0.1",
     "lilconfig": "^3.1.2",
     "lucide-react": "^0.403.0",
     "react": "^18.2.0",
@@ -33,11 +36,17 @@
     "ts-node": "^10.9.2",
     "uuid": "^10.0.0"
   },
+  "optionalDependencies": {
+  "fsevents": "*"
+  },
   "devDependencies": {
     "@astrojs/check": "^0.5.2",
     "@astrojs/tailwind": "^5.1.0",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.14",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3"
@@ -45,6 +54,6 @@
   "description": "Sancor Equipo 2 Project",
   "main": "index.astro",
   "keywords": [],
-  "author": "",
+  "author": "Gaston Alvarez",
   "license": "ISC"
 }

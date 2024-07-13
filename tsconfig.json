@@ -10,6 +10,6 @@
     "jsxImportSource": "react",
     "types": ["astro/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "env.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "env.d.ts", "server.ts"],
   "exclude": ["node_modules"]
 }
