@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
-  output: 'server',
+  output: 'hybrid',
   integrations: [react(), tailwind(), vercel()],
   vite: {
     define: {
