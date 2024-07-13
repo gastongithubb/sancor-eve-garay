@@ -2,7 +2,7 @@ import React from 'react';
 
 const LoginForm = () => {
   const handleGoogleLogin = () => {
-    window.location.href = '/auth/google'; // Redirige al servidor para iniciar sesión con Google
+    window.location.href = '/api/auth/google';
   };
 
   return (

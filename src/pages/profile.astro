@@ -1,0 +1,25 @@
+---
+// Obtén los parámetros de la URL
+const name = Astro.url.searchParams.get('name');
+const email = Astro.url.searchParams.get('email');
+---
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+</head>
+<body>
+    <h1>Perfil de Usuario</h1>
+    {name && email ? (
+        <div>
+            <p>Bienvenido, {name}!</p>
+            <p>Tu email es: {email}</p>
+        </div>
+    ) : (
+        <p>No se encontró información del usuario. Por favor, inicia sesión nuevamente.</p>
+    )}
+    <a href="/">Volver a la página principal</a>
+</body>
+</html>

@@ -1,1 +1,5 @@
-// Contents removed by Astro as it's used for prerendering only
+export { renderers } from '../renderers.mjs';
+
+const page = () => import('../chunks/login_B6pSyu5w.mjs');
+
+export { page };
