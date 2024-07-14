@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import React from 'react';
->>>>>>> 3120d25e780996749973811d25100fece0580884
 
 const LoginForm = () => {
   const handleGoogleLogin = () => {
