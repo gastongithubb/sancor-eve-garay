@@ -1,26 +1,12 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-<<<<<<< HEAD
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-=======
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "node",
->>>>>>> 3120d25e780996749973811d25100fece0580884
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
-<<<<<<< HEAD
-    "types": ["node", "astro/client"],
-    "allowSyntheticDefaultImports": true
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "entry.ts", "global.d.ts"],
-=======
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
     "types": ["astro/client", "node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -28,7 +14,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "env.src/server.tserver.ts"],
->>>>>>> 3120d25e780996749973811d25100fece0580884
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"],
   "exclude": ["node_modules"]
 }

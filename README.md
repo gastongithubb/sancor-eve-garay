@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Astro Starter Kit: Minimal
 
 ```sh
@@ -46,7 +45,6 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-=======
 Proyecto Contact Center Sancor Salud
 Descripción
 Este proyecto tiene como objetivo centralizar y gestionar las novedades, actualizaciones y otros recursos relevantes para el equipo de Sancor Salud en el contact center. El README proporciona una guía rápida sobre cómo utilizar este repositorio y cómo contribuir al mismo.
@@ -83,4 +81,3 @@ git commit -m "Agrega [funcionalidad/novedad/etc]"
 Sube tus cambios a GitHub y abre un pull request.
 Contacto
 Para cualquier consulta o sugerencia, por favor contacta con Gaston Alvarez en gastonalvarez18@outlook.com
->>>>>>> 3120d25e780996749973811d25100fece0580884
