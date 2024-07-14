@@ -20,7 +20,11 @@ const EmployeeList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [unsavedEmployeeChanges, setUnsavedEmployeeChanges] = useState<Record<number, string>>({});
+<<<<<<< HEAD
   const [unsavedBreakChanges, setUnsavedBreakChanges] = useState<Omit<BreakScheduleRow, 'id' | 'endTime'>[]>([]);
+=======
+  const [unsavedBreakChanges, setUnsavedBreakChanges] = useState<Omit<BreakScheduleRow, 'id'>[]>([]);
+>>>>>>> 3120d25e780996749973811d25100fece0580884
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -50,14 +54,24 @@ const EmployeeList: React.FC = () => {
     setUnsavedEmployeeChanges(prev => ({...prev, [id]: xLite}));
   };
 
+<<<<<<< HEAD
   const handleBreakScheduleChange = (employeeId: number, day: string, week: number, startTime: string) => {
     const newSchedule: Omit<BreakScheduleRow, 'id' | 'endTime'> = {
+=======
+  const handleBreakScheduleChange = (employeeId: number, day: string, week: number, startTime: string, endTime: string) => {
+    const newSchedule: Omit<BreakScheduleRow, 'id'> = {
+>>>>>>> 3120d25e780996749973811d25100fece0580884
       employeeId,
       day,
       week,
       month: currentMonth,
       year: currentYear,
+<<<<<<< HEAD
       startTime
+=======
+      startTime,
+      endTime
+>>>>>>> 3120d25e780996749973811d25100fece0580884
     };
     setUnsavedBreakChanges(prev => [...prev.filter(s => 
       s.employeeId !== employeeId || s.day !== day || s.week !== week || s.month !== currentMonth || s.year !== currentYear
@@ -84,7 +98,11 @@ const EmployeeList: React.FC = () => {
     try {
       for (const schedule of unsavedBreakChanges) {
         console.log('Intentando guardar horario:', schedule);
+<<<<<<< HEAD
         await updateBreakSchedule({ ...schedule, endTime: '' }); // Pasamos un string vacío como endTime
+=======
+        await updateBreakSchedule(schedule);
+>>>>>>> 3120d25e780996749973811d25100fece0580884
         console.log('Horario guardado exitosamente:', schedule);
       }
       
@@ -97,6 +115,7 @@ const EmployeeList: React.FC = () => {
           s.day === schedule.day && s.week === schedule.week && s.month === schedule.month && s.year === schedule.year
         );
         if (index !== -1) {
+<<<<<<< HEAD
           updatedBreakSchedules[schedule.employeeId][index] = { 
             ...updatedBreakSchedules[schedule.employeeId][index], 
             ...schedule, 
@@ -104,6 +123,11 @@ const EmployeeList: React.FC = () => {
           };
         } else {
           updatedBreakSchedules[schedule.employeeId].push({ id: 0, ...schedule, endTime: '' });
+=======
+          updatedBreakSchedules[schedule.employeeId][index] = { id: updatedBreakSchedules[schedule.employeeId][index].id, ...schedule };
+        } else {
+          updatedBreakSchedules[schedule.employeeId].push({ id: 0, ...schedule });
+>>>>>>> 3120d25e780996749973811d25100fece0580884
         }
       }
       setBreakSchedules(updatedBreakSchedules);
@@ -215,13 +239,27 @@ const EmployeeList: React.FC = () => {
                       s.employeeId === employee.id && s.day === day && s.week === week && s.month === currentMonth && s.year === currentYear
                     ) || breakSchedules[employee.id]?.find(s => 
                       s.day === day && s.week === week && s.month === currentMonth && s.year === currentYear
+<<<<<<< HEAD
                     ) || { startTime: '' };
+=======
+                    ) || { startTime: '', endTime: '' };
+>>>>>>> 3120d25e780996749973811d25100fece0580884
                     return (
                       <TableCell key={week}>
                         <input 
                           type="time" 
                           value={schedule.startTime} 
+<<<<<<< HEAD
                           onChange={(e) => handleBreakScheduleChange(employee.id, day, week, e.target.value)}
+=======
+                          onChange={(e) => handleBreakScheduleChange(employee.id, day, week, e.target.value, schedule.endTime)}
+                          className="px-2 py-1 mr-2 border rounded"
+                        />
+                        <input 
+                          type="time" 
+                          value={schedule.endTime} 
+                          onChange={(e) => handleBreakScheduleChange(employee.id, day, week, schedule.startTime, e.target.value)}
+>>>>>>> 3120d25e780996749973811d25100fece0580884
                           className="px-2 py-1 border rounded"
                         />
                       </TableCell>
