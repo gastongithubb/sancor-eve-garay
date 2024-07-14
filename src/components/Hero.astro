@@ -1,0 +1,45 @@
+---
+import Container from "./Container.astro"
+---
+<Container>
+<div class="relative flex flex-col-reverse items-center md:flex-row" id="hero">
+    <div class="items-center py-5 row md:w-6/12 md:pb-20 md:pt-10">
+        <div class="space-y-3 text-left">
+            <h1 class="text-5xl font-medium leading-none md:text-6xl">Evelin Garay <br> Team Work</h1>
+            <p class="mt-6 mb-8 text-xl font-normal leading-7 sm:mb-12">Sancor Salud - Konecta</p>
+            <a class="px-9 py-5 bg-zinc-900 hover:bg-white text-white hover:text-black border rounded-2xl justify-items-center md:justify-items-start gap-2.5 inline-flex" rel="noopener noreferrer"  href="/programacion">
+                <h2 class="text-xl font-normal leading-7 text-center">Programacion</h2>
+            </a>
+            <a class="px-9 py-5 bg-black hover:bg-white text-white hover:text-black border rounded-2xl justify-items-center md:justify-items-start gap-2.5 inline-flex" rel="noopener noreferrer"  href="/novedades">
+                <h2 class="text-xl font-normal leading-7 text-center">Novedades</h2>
+            </a>
+        </div>
+    </div>
+    <div class="flex items-center py-5 md:w-6/12 md:pb-20 md:pt-10">
+        <img src="/Hero.svg" width="100%" alt="Hero"/>
+    </div>
+</div>
+
+<div class="flex-row items-center">
+    <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6">
+        <div class="p-4">
+            <img src="/konecta.png" class="w-auto h-10 mx-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+        <div class="p-4">
+            <img src="/Logo.webp" class="w-auto h-12 mx-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+        <div class="flex p-4">
+            <img src="/konecta.png" class="w-auto h-10 m-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+        <div class="p-4">
+            <img src="/Logo.webp" class="w-auto h-12 mx-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+        <div class="flex p-4">
+            <img src="/konecta.png" class="w-auto h-10 m-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+        <div class="p-4">
+            <img src="/Logo.webp" class="w-auto h-12 mx-auto" loading="lazy" alt="client logo" width="" height="" />
+        </div>
+    </div>
+</div>
+</Container>

@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PostList from '../components/PostList';
+import PostForm from '../components/PostForm';
+
+// Simulamos una comprobación de autorización
+const isAuthorized = true; // En una aplicación real, esto vendría de tu sistema de autenticación
+
+const handleNewPost = (title: string, content: string) => {
+  // Aquí manejarías la lógica para guardar la nueva publicación
+  console.log('Nueva publicación:', { title, content });
+};
+---
+
+<Layout title="Mi Foro">
+  <main class="container px-4 py-8 mx-auto">
+    <h1 class="mb-8 text-3xl font-bold text-black">Mi Foro</h1>
+    
+    <PostList client:load />
+    
+    {isAuthorized && (
+      <div class="mt-8">
+        <h2 class="mb-4 text-2xl font-bold text-black">Crear Nueva Publicación</h2>
+        <PostForm client:load onSubmit={handleNewPost} />
+      </div>
+    )}
+  </main>
+</Layout>

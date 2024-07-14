@@ -1,0 +1,12 @@
+---
+import DarkMetricsDashboard from '../components/DarkMetricsDashboard';
+import Layout from '../layouts/Layout.astro';
+import Container from "../components/Container.astro"
+
+
+---
+<Layout title="NPS Trimestral - Sancor Team Eve garay">
+    <Container>
+        <DarkMetricsDashboard client:only="react"/>
+    </Container>
+</Layout>

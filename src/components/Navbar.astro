@@ -1,0 +1,192 @@
+---
+import Container from "./Container.astro"
+
+// Definir tus enlaces de navegación aquí
+const navLinks = [
+  { 
+    label: 'NPS',
+    dropdown: true,
+    items: [
+      { href: '/nps-trimestral', label: 'NPS - Trimestral' },
+      { href: '/nps-individual', label: 'NPS - Individual' },
+      { href: '/balance-mensual', label: 'Balance Mensual' },
+    ]
+  },
+  { href: '/#casos', label: 'Casos derivar / cerrar' },
+  { href: '/promotores', label: 'Promotores' },
+  { href: '/foro', label: 'Foro' },
+  { 
+    label: 'Herramientas',
+    dropdown: true,
+    items: [
+      { href: '/notfound', label: 'Herramienta 1' },
+      { href: '/notfound', label: 'Herramienta 2' },
+      { href: '/notfound', label: 'Herramienta 3' },
+    ]
+  },
+];
+
+// Obtener la información del usuario desde las cookies o localStorage
+const userJson = Astro.cookies.get('user')?.value || (typeof localStorage !== 'undefined' ? localStorage.getItem('user') : null);
+const user = userJson ? JSON.parse(userJson) : null;
+
+// Calcula la altura de la navbar (ajusta este valor según tu diseño)
+const navbarHeight = "64px";
+---
+
+<style define:vars={{ navbarHeight }}>
+  /* Estilos específicos de tu navbar */
+  .navbar {
+    transition: background-color 0.3s ease;
+    height: var(--navbarHeight);
+  }
+  .navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .navbar-scrolled-blur {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); /* Ajusta el valor de blur según lo deseado */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .navbar-spacer {
+    height: var(--navbarHeight);
+  }
+  .dropdown-container {
+    position: relative;
+  }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 10;
+    min-width: 200px;
+    padding-top: 0.5rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  .dropdown-container:hover .dropdown-menu {
+    display: block;
+  }
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -0.5rem;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+  }
+</style>
+
+<header class="fixed top-0 left-0 z-50 w-full">
+  <nav id="landing-header" class="bg-white navbar">
+    <Container class="h-full py-4">
+      <div class="flex items-center justify-between mx-auto">
+        <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="/Logo.webp" class="w-36" alt="Logo" />
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm rounded-lg text-zinc-500 md:hidden hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-200" aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+        <div class="hidden w-full md:flex md:items-center md:w-auto" id="navbar-default">
+          <ul class="flex flex-col p-4 mt-4 font-medium md:flex-row md:space-x-8 md:mt-0 md:p-0 font-SpaceGrotesk">
+            {navLinks.map(link => (
+              <li class="relative dropdown-container">
+                {link.dropdown ? (
+                  <div>
+                    <a href="#" class="flex items-center px-3 py-2 text-black transition-colors duration-200 rounded hover:text-lime">
+                      {link.label}
+                      <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                      </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                      {link.items.map(item => (
+                        <a href={item.href} class="block px-4 py-2 text-sm text-black transition-colors duration-200 hover:bg-zinc-100">{item.label}</a>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <a href={link.href} class="block px-3 py-2 text-black transition-colors duration-200 rounded hover:text-lime">{link.label}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+          {user ? (
+            <div class="flex items-center ml-4">
+              <img src={user.photoUrl || '/default-avatar.png'} alt={user.name} class="w-8 h-8 mr-2 rounded-full" />
+              <span>{user.name}</span>
+            </div>
+          ) : (
+            <div class="flex items-center ml-4 space-x-2">
+              <a href="/login" class="inline-flex items-center px-4 py-2 font-medium text-white transition-colors duration-200 rounded-lg bg-lime hover:bg-black focus:ring-4 focus:outline-none focus:ring-zinc-300">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                </svg>
+                Iniciar sesión
+              </a>
+              {/* <a href="/register" class="inline-flex items-center px-4 py-2 font-medium transition-colors duration-200 border rounded-lg text-lime border-lime hover:bg-lime hover:text-white focus:ring-4 focus:outline-none focus:ring-zinc-300">
+                Registrarse
+              </a> */}
+            </div>
+          )}
+        </div>
+      </div>
+    </Container>
+  </nav>
+</header>
+<div class="navbar-spacer"></div>
+
+
+<script>
+  const listItem = document.querySelectorAll("#landing-header li")
+  const menuBackDrop = document.querySelector("#menu-backdrop") as HTMLElement
+
+  listItem.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      const { left, top, width, height } = item.getBoundingClientRect()
+
+      menuBackDrop.style.setProperty("--left", `${left}px`)
+      menuBackDrop.style.setProperty("--top", `${top}px`)
+      menuBackDrop.style.setProperty("--width", `${width}px`)
+      menuBackDrop.style.setProperty("--height", `${height}px`)
+
+      menuBackDrop.style.opacity = "1"
+      menuBackDrop.style.visibility = "visible"
+    })
+
+    item.addEventListener("mouseleave", () => {
+      menuBackDrop.style.opacity = "0"
+      menuBackDrop.style.visibility = "hidden"
+    })
+  })
+</script>
+
+<script>
+  const headerEl = document.querySelector("#landing-header") as HTMLElement
+
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.9,
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const { isIntersecting } = entry
+      if (isIntersecting) {
+        const color = entry.target.getAttribute("data-header-color") || "defaultColor";
+          headerEl.style.color = color;
+      }
+    })
+  }, observerOptions)
+
+  const sectionElements = document.querySelectorAll(".landing-section")
+  sectionElements.forEach((section) => observer.observe(section))
+</script>

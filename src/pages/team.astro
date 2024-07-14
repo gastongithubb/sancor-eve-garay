@@ -1,0 +1,47 @@
+---
+import Container from "../components/Container.astro"
+import Topic from "../components/Topic.astro";
+import teamData from '../components/Data/team.json';
+import Layout from "../layouts/Layout.astro"
+---
+<Layout title="Equipo">
+    <Container>
+
+        <div class="relative flex flex-col items-center pt-6 md:flex-row">
+            <Topic title="Equipo" description="Conoce el quipo de Evelin Garay"/>
+        </div>
+
+        <div class="flex-row items-center py-5" id="team">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3">
+                {
+                    teamData.team.map(({ title, description,contrato, email, name, link, profile, cumpleaños }) => (
+                        <div class="h-[331px] px-[35px] py-10 bg-white rounded-[45px] shadow-card border border-zinc-900 flex-col justify-start items-start gap-2.5 inline-flex text-black">
+                            <div class="flex flex-col items-start justify-start gap-3">
+                                <div class="inline-flex items-start self-stretch justify-start">
+                                    <div class="flex items-center justify-start gap-8 grow shrink basis-0">
+                                        <div class="h-[102.82px] w-[102.82px] rounded-[50%] overflow-hidden relative">
+                                            <img class="object-cover w-full h-full rounded-[50%]" src={profile} alt={name}/>
+                                        </div>
+                                        <div class="inline-flex flex-col items-start justify-end">
+                                            <div class="text-lg font-normal">{title}</div>
+                                            <div class="text-xl font-medium">{name}</div>
+                                            <div class="text-sm text-gray-600">cumpleaños: {cumpleaños}</div>
+                                        </div>
+                                    </div>
+                                    <a class="top-0 right-0 w-10 h-10" href={link}>
+                                        <img src="/favicon.png" alt="vector"/>
+                                    </a>
+                                </div>
+                                <hr class="w-full border border-black"/>
+                                <p class="text-sm md:text-lg">{description}</p>
+                        <p class="text-sm md:text-sm">{contrato}</p>
+                        <p class="text-sm md:text-sm">{email}</p>
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+    </Container>
+</Layout>

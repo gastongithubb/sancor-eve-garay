@@ -1,0 +1,61 @@
+# Dependencias
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Producción
+/build
+/dist
+
+# Archivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Archivos temporales
+*.log
+*.tmp
+*.temp
+
+# Cachés
+.cache
+.eslintcache
+
+# Archivos de bloqueo de versiones (opcional, dependiendo de tu preferencia)
+# yarn.lock
+# package-lock.json
+
+# Directorios de compilación específicos de Astro (si estás usando Astro)
+.astro
+
+# Otros
+*.pem
+*.local
+.vercel
